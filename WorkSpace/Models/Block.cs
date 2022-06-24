@@ -12,6 +12,6 @@ namespace WorkSpace.Models
         public int PageId { get; set; }
 
         public Page Page { get; set; }
-        public List<Tile> Tiles { get; set; }
+        public List<Element> Elements { get; set; }
     }
 }
