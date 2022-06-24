@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WorkSpace
 {
@@ -32,6 +33,9 @@ namespace WorkSpace
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WorkSpace", Version = "v1" });
             });
+
+            services.AddDbContext<WorkSpaceContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("WorkSpaceContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
