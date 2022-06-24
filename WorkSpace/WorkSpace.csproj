@@ -9,8 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="DTO\" />
     <Folder Include="Mappings\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Repositories\" />
