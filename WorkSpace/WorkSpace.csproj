@@ -5,14 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.20.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Mappings\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="Repositories\" />
     <Folder Include="Services\" />
+    <Folder Include="ViewModels\Response\" />
   </ItemGroup>
 
 </Project>
