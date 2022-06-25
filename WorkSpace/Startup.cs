@@ -34,6 +34,10 @@ namespace WorkSpace
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WorkSpace", Version = "v1" });
             });
 
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
             services.AddDbContext<WorkSpaceContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WorkSpaceContext")));
         }
@@ -52,6 +56,10 @@ namespace WorkSpace
 
             app.UseRouting();
 
+            app.UseCors(builder => builder
+               .AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
