@@ -9,8 +9,8 @@ namespace WorkSpace.Models
     {
         public int Id { get; set; }
         public string ContentHtml { get; set; }
-        public int TileId { get; set; }
+        public int BlockId { get; set; }
 
-        public Tile Tile { get; set; }
+        public Block Block { get; set; }
     }
 }

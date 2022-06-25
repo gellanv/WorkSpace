@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using WorkSpace.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WorkSpace
 {
@@ -40,6 +42,15 @@ namespace WorkSpace
             });
             services.AddDbContext<WorkSpaceContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WorkSpaceContext")));
+            //ПАРОЛИ
+            services.AddIdentity<User, IdentityRole>(opts => {
+                opts.Password.RequiredLength = 5;   // минимальная длина
+                opts.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
+                opts.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
+                opts.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
+                opts.Password.RequireDigit = false; // требуются ли цифры
+            }
+                ).AddEntityFrameworkStores<WorkSpaceContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +71,8 @@ namespace WorkSpace
                .AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowAnyHeader());
+
+            app.UseAuthentication();    // подключение аутентификации
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

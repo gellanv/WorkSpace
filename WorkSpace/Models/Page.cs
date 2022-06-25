@@ -13,6 +13,7 @@ namespace WorkSpace.Models
         public string Description { get; set; }
         public int WorkSpaceId { get; set; }
 
+        public WorkSpace WorkSpace { get; set; }
         public List<Block>Blocks { get; set; }
     }
 }

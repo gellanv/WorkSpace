@@ -13,6 +13,6 @@ namespace WorkSpace.Models
         public int UserId { get; set; }
 
         public User User { get; set; }
-       // public List<Page> Pages { get; set; }
+        public List<Page> Pages { get; set; }
     }
 }

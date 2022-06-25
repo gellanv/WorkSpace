@@ -9,9 +9,11 @@ namespace WorkSpace.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string Coordinates { get; set; }
         public int PageId { get; set; }
+        
 
         public Page Page { get; set; }
-        public List<Tile> Tiles { get; set; }
+        public List<Element> Elements { get; set; }
     }
 }
