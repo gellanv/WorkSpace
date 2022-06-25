@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WorkSpace.Controllers
 {
+    
     [Route("api/account")]
     [ApiController]
    
@@ -18,9 +19,8 @@ namespace WorkSpace.Controllers
         // GET: api/account
         [HttpGet]
         public async Task<IActionResult> GetAccount()
-        {          
-            //return All date except password Object <GetAccountResponse>
-            return null;
+        {    
+           return Ok();
         }
 
         // PUT: api/account/5
