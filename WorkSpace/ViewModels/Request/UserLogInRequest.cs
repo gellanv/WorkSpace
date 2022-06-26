@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkSpace.ViewModels.Request
 {
-    public class UserRequestLogIn
+    public class UserLogInRequest
     {
         public int id { get; set; }//для тестирования, далее нужно удалить строку
         [Required]
