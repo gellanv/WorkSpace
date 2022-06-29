@@ -20,12 +20,6 @@ namespace WorkSpace.Repositories
         }
         public Page Get(int id)
         {
-            //Page page = context.Pages.Find(id);
-            //if (page != null)
-            //{
-            //    return page;
-            //}
-            //return null;
             return context.Pages.Where(x => x.Id == id).FirstOrDefault();
         }
         public void Create(Page page)

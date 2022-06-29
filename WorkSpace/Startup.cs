@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using WorkSpace.Models;
 using Microsoft.AspNetCore.Identity;
+using WorkSpace.Repositories.Interface;
+using WorkSpace.Repositories;
 
 namespace WorkSpace
 {
@@ -40,8 +42,20 @@ namespace WorkSpace
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+
+            //services.AddTransient<IRepositoryBlock,BlockRepository>();
+            //services.AddTransient<IRepositoryElement, ElementRepository>();
+            //services.AddTransient<IRepositoryWorkSpace, WorkSpaceRepository>();
+            //services.AddTransient<IRepositoryPage, PageRepository>();
+            //services.AddTransient<IRepositoryUser, UserRepository>();
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+
             services.AddDbContext<WorkSpaceContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WorkSpaceContext")));
+
+
             //ПАРОЛИ
             services.AddIdentity<User, IdentityRole>(opts => {
                 opts.Password.RequiredLength = 5;   // минимальная длина
@@ -71,6 +85,7 @@ namespace WorkSpace
                .AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowAnyHeader());
+
 
             app.UseAuthentication();    // подключение аутентификации
             app.UseAuthorization();

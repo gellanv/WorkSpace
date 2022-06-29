@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WorkSpace.Repositories.Interface;
 
 namespace WorkSpace.Controllers
 {
@@ -11,6 +12,14 @@ namespace WorkSpace.Controllers
     [ApiController]
     public class PageController : Controller
     {
+
+        private IUnitOfWork unitOfWork;
+
+        public PageController(IUnitOfWork _unitOfWork)
+        {
+            this.unitOfWork = _unitOfWork;
+        }
+
         //// GET: api/page
         //[HttpGet]
         //public async Task<ActionResult<IQueryable<Object>>> GetAllPagesByIdWorkSpace(int idWorkSpace)
@@ -23,6 +32,7 @@ namespace WorkSpace.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Object>> GetPageById(int id)
         {
+            //unitOfWork.RepositoryPage.GetList();
             //return Object <GetPageResponse> with including All blocks
             //response ActionResult 400 incorrect Id
             //response ActionResult 404 with such id was not found.
