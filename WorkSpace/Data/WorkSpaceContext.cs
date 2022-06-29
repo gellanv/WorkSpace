@@ -16,8 +16,8 @@ using WorkSpace.Models;
 
        // public DbSet<WorkSpace.Models.User> Users { get; set; }
         public DbSet<WorkSpace.Models.WorkSpace> WorkSpaces { get; set; }
-        public DbSet<WorkSpace.Models.Page> Pages { get; set; }
-        public DbSet<WorkSpace.Models.Block> Blocks { get; set; }
+        public DbSet<Page> Pages { get; set; }
+        public DbSet<Block> Blocks { get; set; }
 
-        public DbSet<WorkSpace.Models.Element> Elements { get; set; }
+        public DbSet<Element> Elements { get; set; }
 }

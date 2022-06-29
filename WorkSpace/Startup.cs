@@ -10,6 +10,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WorkSpace.Helpers;
 using WorkSpace.Models;
+using Microsoft.AspNetCore.Identity;
+using WorkSpace.Repositories.Interface;
+using WorkSpace.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WorkSpace.Services;
 using WorkSpace.Services.Interface;
 
@@ -78,6 +84,29 @@ namespace WorkSpace
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+
+            //services.AddTransient<IRepositoryBlock,BlockRepository>();
+            //services.AddTransient<IRepositoryElement, ElementRepository>();
+            //services.AddTransient<IRepositoryWorkSpace, WorkSpaceRepository>();
+            //services.AddTransient<IRepositoryPage, PageRepository>();
+            //services.AddTransient<IRepositoryUser, UserRepository>();
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+
+            services.AddDbContext<WorkSpaceContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("WorkSpaceContext")));
+
+
+            //ПАРОЛИ
+            services.AddIdentity<User, IdentityRole>(opts => {
+                opts.Password.RequiredLength = 5;   // минимальная длина
+                opts.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
+                opts.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
+                opts.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
+                opts.Password.RequireDigit = false; // требуются ли цифры
+            }
+                ).AddEntityFrameworkStores<WorkSpaceContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -98,7 +127,8 @@ namespace WorkSpace
                .AllowAnyMethod()
                .AllowAnyHeader());
 
-            app.UseAuthentication();
+
+            app.UseAuthentication();    // подключение аутентификации
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
