@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WorkSpace.ViewModels.Request
 {
     public class UserLogInRequest
     {
-        public int id { get; set; }//для тестирования, далее нужно удалить строку
         [Required]
-        public string Login { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
         [Required]
         public string Password { get; set; }
     }

@@ -21,12 +21,12 @@ namespace WorkSpace.Services
             _userManager = userManager;
         }
 
-        public async Task<UserRegistrationResponse> RegistrationAsync(UserRegistrationRequest user)
+        public async Task<AuthenticationResponse> RegistrationAsync(UserRegistrationRequest user)
         {
             var existingUser = await _userManager.FindByEmailAsync(user.Email);
             if (existingUser != null)
             {
-                return new UserRegistrationResponse
+                return new AuthenticationResponse
                 {
                     Error = "User with such email already exists"
                 };
@@ -39,31 +39,59 @@ namespace WorkSpace.Services
             var createUser = await _userManager.CreateAsync(newUser, user.Password);
             if (!createUser.Succeeded)
             {
-                return new UserRegistrationResponse
+                return new AuthenticationResponse
                 {
                     Error = createUser.Errors.ToString()
                 };
             }
+            return CreateToken(newUser.Id, newUser.Email, newUser.UserName);
+        }
+
+        public async Task<AuthenticationResponse> LoginAsync(UserLogInRequest user)
+        {
+            var _user = await _userManager.FindByEmailAsync(user.Email);
+            if (_user == null)
+            {
+                return new AuthenticationResponse
+                {
+                    Error = "User does not exists"
+                };
+            }
+
+            var userHasValidPassword = await _userManager.CheckPasswordAsync(_user, user.Password);
+            if (!userHasValidPassword)
+            {
+                return new AuthenticationResponse
+                {
+                    Error = "User/password combination is wrong"
+                };
+            }
+
+            return CreateToken(_user.Id, _user.Email, _user.UserName);
+        }
+
+        private AuthenticationResponse CreateToken(string id, string email, string userName)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = AuthOptions.GetSymmetricSecurityKey();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
-                { 
-                    new Claim(JwtRegisteredClaimNames.Sub, newUser.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),//для рефреш токена
-                    new Claim(JwtRegisteredClaimNames.Email, newUser.Email),
-                    new Claim("id", newUser.Id),
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //для рефреш токена
+                    new Claim(JwtRegisteredClaimNames.Email, email),
+                    new Claim("id", id),
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
-                SigningCredentials = new SigningCredentials(key,SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return new UserRegistrationResponse
+            return new AuthenticationResponse
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
-                UserName= newUser.UserName
+                UserName = userName
             };
         }
     }

@@ -6,6 +6,7 @@ namespace WorkSpace.Services.Interface
 {
     public interface IIdentityService
     {
-        Task<UserRegistrationResponse> RegistrationAsync(UserRegistrationRequest user);
+        Task<AuthenticationResponse> RegistrationAsync(UserRegistrationRequest user);
+        Task<AuthenticationResponse> LoginAsync(UserLogInRequest user);
     }
 }
