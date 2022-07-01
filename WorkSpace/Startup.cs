@@ -75,6 +75,7 @@ namespace WorkSpace
             });
 
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             services.AddCors(c =>
             {
