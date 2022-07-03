@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WorkSpace.Services.Interface;
 
 namespace WorkSpace.Controllers
 {
@@ -13,8 +14,24 @@ namespace WorkSpace.Controllers
     [Route("api/account")]
     [ApiController]
    
-    public class AccountController : Controller
-    {        
+    public class AccountController : BaseController
+    {
+        private readonly IAccountService _accountService;
+
+        public AccountController(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
+
+        // GET: api/account/username
+        [HttpGet("username")]
+        public async Task<IActionResult> GetUserName()
+        {
+           var name = await _accountService.GetUserName(UserId);
+
+            return new JsonResult(new { userName = name});                
+        }
+
         // GET: api/account
         [HttpGet]
         public async Task<IActionResult> GetAccount()

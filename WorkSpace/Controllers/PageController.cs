@@ -32,6 +32,8 @@ namespace WorkSpace.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Object>> GetPageById(int id)
         {
+            //list of blocks (id, title) + list of element
+
             //unitOfWork.RepositoryPage.GetList();
             //return Object <GetPageResponse> with including All blocks
             //response ActionResult 400 incorrect Id

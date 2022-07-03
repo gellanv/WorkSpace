@@ -10,6 +10,7 @@ namespace WorkSpace.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Coordinates { get; set; }
+        public string Style { get; set; }
         public int PageId { get; set; }
         
 
