@@ -14,5 +14,5 @@ namespace WorkSpace.Mappings
         {
             CreateMap<User,UserDTO>().ReverseMap();
         }
-    }
+    } 
 }
