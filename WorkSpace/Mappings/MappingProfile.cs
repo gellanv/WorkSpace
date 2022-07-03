@@ -10,6 +10,7 @@ namespace WorkSpace.Mappings
 {
     public class MappingProfile : Profile
     {
+        //Изменения для записи
         public MappingProfile()
         {
             CreateMap<User,UserDTO>().ReverseMap();
