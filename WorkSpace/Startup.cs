@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WorkSpace.Helpers;
+using WorkSpace.Mappings;
 using WorkSpace.Models;
 using WorkSpace.Repositories;
 using WorkSpace.Repositories.Interface;
@@ -87,7 +89,11 @@ namespace WorkSpace
             //services.AddTransient<IRepositoryPage, PageRepository>();
             //services.AddTransient<IRepositoryUser, UserRepository>();
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();            
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            //Mapper.Initialize(cfg => cfg.AddProfile<MappingProfile>());
+
+            //services.AddAutoMapper();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
