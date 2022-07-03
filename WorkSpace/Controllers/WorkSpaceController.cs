@@ -10,7 +10,7 @@ namespace WorkSpace.Controllers
     [Route("api/workspaces")]
     [ApiController]
 
-    public class WorkSpaceController : Controller
+    public class WorkSpaceController : ControllerBase
     {
         //check JWT token from headlines for ALL points of controller
 
