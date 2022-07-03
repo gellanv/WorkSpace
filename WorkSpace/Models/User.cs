@@ -10,7 +10,7 @@ namespace WorkSpace.Models
     {      
         public string Photo { get; set; }     
         public string Company { get; set; }
-
+        
         public List<WorkSpace> WorkSpaces { get; set; }
     }
 }
