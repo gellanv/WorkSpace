@@ -8,6 +8,7 @@ namespace WorkSpace.Repositories.Interface
 {
     public interface IRepositoryWorkSpace
     {
+        public Task<IEnumerable<WorkSpace.Models.WorkSpace>> GetWorkSpaces(string userId);
         IEnumerable<WorkSpace.Models.WorkSpace> GetList();
         WorkSpace.Models.WorkSpace Get(int id);
         void Create(WorkSpace.Models.WorkSpace workSpace);

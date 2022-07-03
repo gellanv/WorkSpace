@@ -2,25 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WorkSpace.DTO;
+using WorkSpace.Services;
+using WorkSpace.ViewModels.Response;
 
 namespace WorkSpace.Controllers
 {
     [Route("api/workspaces")]
     [ApiController]
 
-    public class WorkSpaceController : ControllerBase
+    public class WorkSpaceController : BaseController
     {
-        //check JWT token from headlines for ALL points of controller
+        private readonly WorkSpaceService workSpaceService;
+        private readonly IMapper mapper;
 
-        // GET: api/workspaces
-        [HttpGet]
-        public async Task<ActionResult<IQueryable<Object>>> GetAllWorkSpace()
+
+        public WorkSpaceController(WorkSpaceService _workSpaceService, IMapper _mapper)
+        {
+            this.workSpaceService = _workSpaceService;
+            this.mapper = _mapper;
+        }
+        //viemodel - string name, dto - 
+        [HttpPost]
+        public async Task<IActionResult> CreateWorkSpace(string name)
         {
             //Массив воркспейсов(id, name)
-            //return IQueryable<GetAllWorkSpaceResponse>
-            return null;
+            IEnumerable<WorkSpaceDTO> workSpaceDTOs = await workSpaceService.GetAllWorkSpace(UserId);
+            IEnumerable<GetAllWorkSpaceResponse> getAllWorkSpaceResponses = mapper.Map<IEnumerable<GetAllWorkSpaceResponse>>(workSpaceDTOs);
+
+            return Ok(getAllWorkSpaceResponses);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllWorkSpace()
+        {
+            //Массив воркспейсов(id, name)
+            IEnumerable<WorkSpaceDTO> workSpaceDTOs = await workSpaceService.GetAllWorkSpace(UserId);
+            IEnumerable<GetAllWorkSpaceResponse> getAllWorkSpaceResponses = mapper.Map<IEnumerable<GetAllWorkSpaceResponse>>(workSpaceDTOs);
+            
+            return Ok(getAllWorkSpaceResponses);
         }
 
         // GET: api/workspaces/5

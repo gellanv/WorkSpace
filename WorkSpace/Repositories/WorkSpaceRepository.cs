@@ -16,6 +16,11 @@ namespace WorkSpace.Repositories
             this.context = _context;
         }
 
+        public async Task<IEnumerable<Models.WorkSpace>> GetWorkSpaces(string userId)
+        {
+            return await context.WorkSpaces.Where(x => x.UserId == userId).ToListAsync();
+        }
+        
         public IEnumerable<Models.WorkSpace> GetList()
         {
             return context.WorkSpaces.ToList();

@@ -25,7 +25,6 @@
   <ItemGroup>
     <Folder Include="Mappings\" />
     <Folder Include="Migrations\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 

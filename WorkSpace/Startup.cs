@@ -78,21 +78,16 @@ namespace WorkSpace
 
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IAccountService, AccountService>();
-
+            services.AddScoped<IWorkSpaceService, WorkSpaceService>();
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
-            //services.AddTransient<IRepositoryBlock,BlockRepository>();
-            //services.AddTransient<IRepositoryElement, ElementRepository>();
-            //services.AddTransient<IRepositoryWorkSpace, WorkSpaceRepository>();
-            //services.AddTransient<IRepositoryPage, PageRepository>();
-            //services.AddTransient<IRepositoryUser, UserRepository>();
+           
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
-            //Mapper.Initialize(cfg => cfg.AddProfile<MappingProfile>());
 
             //services.AddAutoMapper();
         }
