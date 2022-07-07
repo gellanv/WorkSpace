@@ -15,6 +15,5 @@ namespace WorkSpace.Repositories.Interface
         public Task<Models.WorkSpace> Create(Models.WorkSpace workSpace);
         public void Update(Models.WorkSpace workSpace);
         public void Delete(Models.WorkSpace workSpace);
-        public void Save();
     }
 }

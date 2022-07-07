@@ -40,10 +40,7 @@ namespace WorkSpace.Repositories
                 context.Users.Remove(user);
             }
         }
-        public void Save()
-        {
-            context.SaveChanges();
-        }
+        
 
         
     }

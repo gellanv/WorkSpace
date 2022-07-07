@@ -39,10 +39,7 @@ namespace WorkSpace.Repositories
             if (block != null)
                 context.Blocks.Remove(block);
         }
-        public void Save()
-        {
-            context.SaveChanges();
-        }
+        
 
         
     }

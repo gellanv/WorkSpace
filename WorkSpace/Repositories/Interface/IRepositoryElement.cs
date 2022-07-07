@@ -13,6 +13,5 @@ namespace WorkSpace.Repositories.Interface
         void Create(Element element);
         void Update(Element element);
         void Delete(int id);
-        void Save();
     }
 }

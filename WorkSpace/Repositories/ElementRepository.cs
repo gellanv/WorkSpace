@@ -40,10 +40,7 @@ namespace WorkSpace.Repositories
             if (element != null)
                 context.Elements.Remove(element);
         }
-        public void Save()
-        {
-            context.SaveChanges();
-        }
+        
 
         
     }

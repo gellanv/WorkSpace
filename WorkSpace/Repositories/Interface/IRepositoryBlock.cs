@@ -13,6 +13,5 @@ namespace WorkSpace.Repositories.Interface
         void Create(Block block); // создание объекта
         void Update(Block block); // обновление объекта
         void Delete(int id); // удаление объекта по id
-        void Save();  // сохранение изменений
     }
 }

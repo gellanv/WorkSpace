@@ -13,6 +13,5 @@ namespace WorkSpace.Repositories
         void Create(Page item); // создание объекта
         void Update(Page item); // обновление объекта
         void Delete(int id); // удаление объекта по id
-        void Save();  // сохранение изменений
     }
 }

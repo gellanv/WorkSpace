@@ -15,7 +15,6 @@ namespace WorkSpace.Repositories.Interface
         void Update(User user);
         //void Delete(int id);
         void Delete(String id);
-        void Save();
 
     }
 }

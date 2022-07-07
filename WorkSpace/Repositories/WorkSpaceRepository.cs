@@ -62,10 +62,6 @@ namespace WorkSpace.Repositories
         {
             context.WorkSpaces.Remove(workSpace);
         }
-        public async  void Save()
-        {
-           await context.SaveChangesAsync();
-        }
 
        
     }

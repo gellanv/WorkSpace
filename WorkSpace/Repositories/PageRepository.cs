@@ -38,10 +38,7 @@ namespace WorkSpace.Repositories
             if (page != null)
                 context.Pages.Remove(page);
         }
-        public void Save()
-        {
-            context.SaveChanges();
-        }
+        
 
 
 
