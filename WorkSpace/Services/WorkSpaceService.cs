@@ -63,7 +63,7 @@ namespace WorkSpace.Services
             modelWorkSpace.Name = changeNameWorkSpaceDTO.Name;
 
             unitOfWork.RepositoryWorkSpace.Update(modelWorkSpace);
-            unitOfWork.RepositoryWorkSpace.Save();
+            await unitOfWork.SaveAsync();
             var DTO = mapper.Map<WorkSpaceDTO>(modelWorkSpace);
             
             return DTO;
