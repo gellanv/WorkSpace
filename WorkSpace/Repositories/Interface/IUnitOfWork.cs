@@ -12,6 +12,6 @@ namespace WorkSpace.Repositories.Interface
         IRepositoryPage RepositoryPage { get; }
         IRepositoryWorkSpace RepositoryWorkSpace { get; }
         IRepositoryUser RepositoryUser { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

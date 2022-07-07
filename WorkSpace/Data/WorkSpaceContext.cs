@@ -11,7 +11,7 @@ using WorkSpace.Models;
         public WorkSpaceContext (DbContextOptions<WorkSpaceContext> options)
             : base(options)
         {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
         }
 
        // public DbSet<WorkSpace.Models.User> Users { get; set; }

@@ -9,11 +9,12 @@ namespace WorkSpace.Repositories.Interface
     public interface IRepositoryWorkSpace
     {
         public Task<IEnumerable<WorkSpace.Models.WorkSpace>> GetWorkSpaces(string userId);
-        IEnumerable<WorkSpace.Models.WorkSpace> GetList();
-        WorkSpace.Models.WorkSpace Get(int id);
-        void Create(WorkSpace.Models.WorkSpace workSpace);
-        void Update(WorkSpace.Models.WorkSpace workSpace);
-        void Delete(int id);
-        void Save();
+        public IEnumerable<WorkSpace.Models.WorkSpace> GetList();
+        public Task<IEnumerable<Page>> GetPages(int workSpaceId);
+        public Task<Models.WorkSpace> GetWorkSpaceById(int workSpaceId);
+        public Task<Models.WorkSpace> Create(Models.WorkSpace workSpace);
+        public void Update(Models.WorkSpace workSpace);
+        public void Delete(Models.WorkSpace workSpace);
+        public void Save();
     }
 }

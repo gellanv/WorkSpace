@@ -31,7 +31,7 @@ namespace WorkSpace
         {
             services.AddControllers();
             services.AddDbContext<WorkSpaceContext>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("WorkSpaceContext")));
+            options.UseSqlServer(Configuration.GetConnectionString("WorkSpaceContext")));
             //ПАРОЛИ
             services.AddIdentity<User, IdentityRole>(opts =>
             {

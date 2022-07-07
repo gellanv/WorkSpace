@@ -162,6 +162,9 @@ namespace WorkSpace.Migrations
                     b.Property<int>("PageId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Style")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -302,15 +305,12 @@ namespace WorkSpace.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("WorkSpaces");
                 });
@@ -403,7 +403,7 @@ namespace WorkSpace.Migrations
                 {
                     b.HasOne("WorkSpace.Models.User", "User")
                         .WithMany("WorkSpaces")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

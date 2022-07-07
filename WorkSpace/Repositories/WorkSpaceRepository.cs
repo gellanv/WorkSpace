@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorkSpace.DTO;
+using WorkSpace.Models;
 using WorkSpace.Repositories.Interface;
 
 namespace WorkSpace.Repositories
@@ -13,41 +15,58 @@ namespace WorkSpace.Repositories
 
         public WorkSpaceRepository(WorkSpaceContext _context)
         {
-            this.context = _context;
+            context = _context;
         }
 
         public async Task<IEnumerable<Models.WorkSpace>> GetWorkSpaces(string userId)
         {
             return await context.WorkSpaces.Where(x => x.UserId == userId).ToListAsync();
         }
-        
+        public async Task<Models.WorkSpace> GetWorkSpaceById(int  workSpaceId)
+        {
+            int count = context.WorkSpaces.Count();
+            var workSpace = await context.WorkSpaces.Where(x => x.Id == workSpaceId).FirstOrDefaultAsync();
+
+
+            return workSpace;
+        }
         public IEnumerable<Models.WorkSpace> GetList()
         {
             return context.WorkSpaces.ToList();
         }
-        public Models.WorkSpace Get(int id)
+        public async Task<IEnumerable<Page>> GetPages(int workSpaceId)
         {
-            return context.WorkSpaces.Where(x => x.Id == id).FirstOrDefault();
+            return await context.Pages.Where(x => x.WorkSpaceId == workSpaceId).ToListAsync();
         }
-        public void Create(Models.WorkSpace workSpace)
+        public async Task<Models.WorkSpace> Create(Models.WorkSpace workSpace)
         {
-            context.WorkSpaces.Add(workSpace);
+            await context.WorkSpaces.AddAsync(workSpace);
+            return workSpace;
+        }
+        public async Task<Models.WorkSpace> ChangeName(WorkSpaceDTO changeNameWorkSpaceDTO)
+        {
+            var findWorkSpace = await context.WorkSpaces.FindAsync(changeNameWorkSpaceDTO.Id);
+            findWorkSpace.Name = changeNameWorkSpaceDTO.Name;
+
+            
+            return findWorkSpace;
         }
         public void Update(Models.WorkSpace workSpace)
         {
             context.Entry(workSpace).State = EntityState.Modified;
+            //context.Update(workSpace);
+            
         }
-        public void Delete(int id)
+  
+        public  void Delete(Models.WorkSpace workSpace)
         {
-            Models.WorkSpace workSpace = context.WorkSpaces.Find(id);
-            if (workSpace != null)
-                context.WorkSpaces.Remove(workSpace);
+            context.WorkSpaces.Remove(workSpace);
         }
-        public void Save()
+        public async  void Save()
         {
-            context.SaveChanges();
+           await context.SaveChangesAsync();
         }
 
-        
+       
     }
 }
