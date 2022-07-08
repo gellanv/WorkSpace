@@ -8,10 +8,10 @@ namespace WorkSpace.Repositories
 {
     public interface IRepositoryPage
     {
-        IEnumerable<Page> GetList(); // получение всех объектов
-        Page Get(int id); // получение одного объекта по id
-        void Create(Page item); // создание объекта
-        void Update(Page item); // обновление объекта
-        void Delete(int id); // удаление объекта по id
+        public IEnumerable<Page> GetList(); // получение всех объектов
+        public Task<IEnumerable<Block>> GetPageById(int id); // получение одного объекта по id
+        public Task<Page> Create(Page page); // создание объекта
+        public void Update(Page page); // обновление объекта
+        public void Delete(int id); // удаление объекта по id
     }
 }

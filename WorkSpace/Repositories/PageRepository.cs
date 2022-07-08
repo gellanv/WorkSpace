@@ -18,9 +18,10 @@ namespace WorkSpace.Repositories
         {
             return context.Pages.ToList();
         }
-        public Page Get(int id)
+        
+        public async Task<IEnumerable<Block>> GetPageById(int id)
         {
-            return context.Pages.Where(x => x.Id == id).FirstOrDefault();
+            return await context.Blocks.Where(x => x.PageId == id).Include(u=>u.Elements).ToListAsync();
         }
         public void Create(Page page)
         {
@@ -62,5 +63,11 @@ namespace WorkSpace.Repositories
             GC.SuppressFinalize(this);
         }
 
+        
+
+        Task<Page> IRepositoryPage.Create(Page page)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

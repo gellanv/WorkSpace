@@ -2,23 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkSpace.Repositories.Interface;
+using WorkSpace.Services.Interface;
+using WorkSpace.ViewModels.Response;
 
 namespace WorkSpace.Controllers
 {
     [Route("api/pages")]
     [ApiController]
-    public class PageController : Controller
+    public class PageController : BaseController
     {
 
-        private IUnitOfWork unitOfWork;
+        private readonly IPageService pageService;
+        private readonly IMapper mapper;
 
-        public PageController(IUnitOfWork _unitOfWork)
+        public PageController(IPageService _pageService, IMapper _mapper)
         {
-            this.unitOfWork = _unitOfWork;
+            this.pageService = _pageService;
+            this.mapper = _mapper;
         }
+
+
 
         //// GET: api/page
         //[HttpGet]
@@ -35,10 +42,15 @@ namespace WorkSpace.Controllers
             //list of blocks (id, title) + list of element
 
             //unitOfWork.RepositoryPage.GetList();
+
             //return Object <GetPageResponse> with including All blocks
             //response ActionResult 400 incorrect Id
             //response ActionResult 404 with such id was not found.
-            return null;
+
+            var pageListDTO = await pageService.GetBlocksElementsOfPageById(id);
+            var blocksElementsResponse = mapper.Map<BlocksElementsResponse>(pageListDTO);
+
+            return Ok(blocksElementsResponse);
         }
 
         // PUT: api/page/5
