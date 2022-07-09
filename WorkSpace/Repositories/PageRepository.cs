@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorkSpace.DTO;
 using WorkSpace.Models;
 
 namespace WorkSpace.Repositories
@@ -19,9 +20,23 @@ namespace WorkSpace.Repositories
             return context.Pages.ToList();
         }
         
-        public async Task<IEnumerable<Block>> GetPageById(int id)
+        public async Task<IEnumerable<BlocksElementsDTO>> GetPageById(int id)
         {
-            return await context.Blocks.Where(x => x.PageId == id).Include(u=>u.Elements).ToListAsync();
+            //return await context.Blocks.Where(x => x.PageId == id).Include(u=>u.Elements).ToListAsync();
+            return await context.Blocks
+                                        .Where(x => x.PageId == id)
+                                        .Select(block => new BlocksElementsDTO
+                                        {
+                                            Id = block.Id,
+                                            Title = block.Title,
+                                            Elements = block.Elements
+                                            .Select(elem => new BlocksElementsDTO.ElementDTO
+                                            {
+                                                Id = elem.Id,
+                                                ContentHtml = elem.ContentHtml
+                                            }),
+                                        })
+                                        .ToListAsync();
         }
         public void Create(Page page)
         {

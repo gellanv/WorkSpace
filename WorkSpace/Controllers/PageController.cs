@@ -37,7 +37,7 @@ namespace WorkSpace.Controllers
 
         // GET: api/page/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Object>> GetPageById(int id)
+        public async Task<ActionResult> GetPageById(int id)
         {
             //list of blocks (id, title) + list of element
 
@@ -48,9 +48,9 @@ namespace WorkSpace.Controllers
             //response ActionResult 404 with such id was not found.
 
             var pageListDTO = await pageService.GetBlocksElementsOfPageById(id);
-            var blocksElementsResponse = mapper.Map<BlocksElementsResponse>(pageListDTO);
+            //var blocksElementsResponse = mapper.Map<BlocksElementsResponse>(pageListDTO);!!!!!!!!!Вот это надо замапить
 
-            return Ok(blocksElementsResponse);
+            return Ok(pageListDTO);
         }
 
         // PUT: api/page/5
