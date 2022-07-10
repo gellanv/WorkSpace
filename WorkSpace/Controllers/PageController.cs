@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using WorkSpace.DTO;
 using WorkSpace.Repositories.Interface;
 using WorkSpace.Services.Interface;
+using WorkSpace.ViewModels.Request;
 using WorkSpace.ViewModels.Response;
 
 namespace WorkSpace.Controllers
@@ -28,13 +29,19 @@ namespace WorkSpace.Controllers
 
         // PUT: api/page/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> ChangePageById(int id)
+        public async Task<ActionResult> ChangePageById(int id, ChangePageNameRequest changePageNameRequest)
         {
+            var changePageNameDTO = mapper.Map<ChangePageNameDTO>(changePageNameRequest);
+            changePageNameDTO.Id = id;
+            var pageChangedName = await pageService.ChangePageNameById(changePageNameDTO);
+            var pageResponse = mapper.Map<ChangePageNameResponse>(pageChangedName);
+
+            return Ok(pageResponse);
             //response ActionResult OK 204
             //response ActionResult 400 incorrect Id
             //response ActionResult 404 with such id was not found.
 
-            return null;
+            
         }
 
         //// GET: api/page
@@ -45,13 +52,13 @@ namespace WorkSpace.Controllers
         //    return null;
         //}
 
+        
+
         // GET: api/page/5
         [HttpGet("{id}")]
         public async Task<ActionResult> GetPageById(int id)
         {
             //list of blocks (id, title) + list of element
-
-            //unitOfWork.RepositoryPage.GetList();
 
             //return Object <GetPageResponse> with including All blocks
             //response ActionResult 400 incorrect Id

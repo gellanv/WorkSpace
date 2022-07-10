@@ -40,7 +40,12 @@ namespace WorkSpace.Mappings
 
            // CreateMap<BlockDTO.ElementDTO, GetPageByIdResponse.ElementDTO>().ReverseMap();
             CreateMap<BlockDTO, GetPageByIdResponse>().ReverseMap();
-            
+
+
+            CreateMap<ChangePageNameRequest, ChangePageNameDTO>().ReverseMap();
+            CreateMap<ChangePageNameDTO, Page>().ReverseMap();
+            CreateMap<ChangePageNameDTO, ChangePageNameResponse>().ReverseMap();
+
         }
     } 
 }

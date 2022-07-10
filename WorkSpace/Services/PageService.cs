@@ -42,5 +42,17 @@ namespace WorkSpace.Services
             return PageDTO;
         }
 
+        public async Task<ChangePageNameDTO> ChangePageNameById(ChangePageNameDTO changePageNameDTO)
+        {
+            var modelPage = await unitOfWork.RepositoryPage.GetPageById(changePageNameDTO.Id);
+            modelPage.Name = changePageNameDTO.Name;
+
+            unitOfWork.RepositoryPage.Update(modelPage);
+            await unitOfWork.SaveAsync();
+
+            var DTO = mapper.Map<ChangePageNameDTO>(modelPage);
+
+            return DTO;
+        }
     }
 }
