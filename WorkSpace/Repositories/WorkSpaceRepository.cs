@@ -24,9 +24,7 @@ namespace WorkSpace.Repositories
         }
         public async Task<Models.WorkSpace> GetWorkSpaceById(int  workSpaceId)
         {
-            int count = context.WorkSpaces.Count();
             var workSpace = await context.WorkSpaces.Where(x => x.Id == workSpaceId).FirstOrDefaultAsync();
-
 
             return workSpace;
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WorkSpace.DTO;
 using WorkSpace.Models;
+using static WorkSpace.DTO.PageDTO;
 
 namespace WorkSpace.Repositories
 {
@@ -19,24 +20,52 @@ namespace WorkSpace.Repositories
         {
             return context.Pages.ToList();
         }
-        
-        public async Task<IEnumerable<BlocksElementsDTO>> GetPageById(int id)
+        public async Task<Page> GetPageById(int id)
         {
-            //return await context.Blocks.Where(x => x.PageId == id).Include(u=>u.Elements).ToListAsync();
-            return await context.Blocks
-                                        .Where(x => x.PageId == id)
-                                        .Select(block => new BlocksElementsDTO
-                                        {
-                                            Id = block.Id,
-                                            Title = block.Title,
-                                            Elements = block.Elements
-                                            .Select(elem => new BlocksElementsDTO.ElementDTO
+            return await context.Pages.Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<PageDTO> GetPageDTOById(int id)
+        {
+            
+            return await context.Pages
+                                       .Where(x => x.Id == id)
+                                       .Select(page=>new PageDTO
                                             {
-                                                Id = elem.Id,
-                                                ContentHtml = elem.ContentHtml
-                                            }),
-                                        })
-                                        .ToListAsync();
+                                             Id = id,
+                                             Name = page.Name,
+                                             ListBlocks=page.Blocks
+                                                .Select(block => new BlockDTO
+                                                 {
+                                                     Id = block.Id,
+                                                     Title = block.Title,
+                                                     ListElements = block.Elements
+                                                                           .Select(elem => new BlockDTO.ElementDTO
+                                                                           {
+                                                                               Id = elem.Id,
+                                                                               ContentHtml = elem.ContentHtml
+                                                                           }),
+                                                 })
+                                            })
+                                       
+                                       .FirstOrDefaultAsync();
+
+
+            
+            //return await context.Blocks
+            //                            .Where(x => x.PageId == id)
+            //                            .Select(block => new BlocksElementsDTO
+            //                            {
+            //                                Id = block.Id,
+            //                                Title = block.Title,
+            //                                Elements = block.Elements
+            //                                .Select(elem => new BlocksElementsDTO.ElementDTO
+            //                                {
+            //                                    Id = elem.Id,
+            //                                    ContentHtml = elem.ContentHtml
+            //                                }),
+            //                            })
+            //                            .ToListAsync();
         }
         public void Create(Page page)
         {
@@ -48,11 +77,9 @@ namespace WorkSpace.Repositories
             context.Entry(page).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(Page page)
         {
-            Page page = context.Pages.Find(id);
-            if (page != null)
-                context.Pages.Remove(page);
+            context.Pages.Remove(page);
         }
         
 
@@ -84,5 +111,7 @@ namespace WorkSpace.Repositories
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

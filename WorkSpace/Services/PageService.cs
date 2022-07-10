@@ -19,11 +19,27 @@ namespace WorkSpace.Services
             this.unitOfWork = _unitOfWork;
             this.mapper = _mapper;
         }
-        public async Task<IEnumerable<BlocksElementsDTO>> GetBlocksElementsOfPageById(int pageId)
-        {
-            var listBlocksElementsDTOs = await unitOfWork.RepositoryPage.GetPageById(pageId);
 
-            return listBlocksElementsDTOs;
+        public async Task DeletePageById(int pageId)
+        {
+            if (pageId > 0)
+            {
+                var page = await unitOfWork.RepositoryPage.GetPageById(pageId);
+                if (page != null)
+                {
+                    unitOfWork.RepositoryPage.Delete(page);
+                    await unitOfWork.SaveAsync();
+                }
+                else throw new Exception("такой pageId не найден");
+            }
+            else throw new Exception("такого pageId не существует");
+        }
+
+        public async Task<PageDTO> GetPageById(int pageId)
+        {
+            var PageDTO = await unitOfWork.RepositoryPage.GetPageDTOById(pageId);
+
+            return PageDTO;
         }
 
     }

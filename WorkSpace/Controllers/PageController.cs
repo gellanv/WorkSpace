@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WorkSpace.DTO;
 using WorkSpace.Repositories.Interface;
 using WorkSpace.Services.Interface;
 using WorkSpace.ViewModels.Response;
@@ -25,7 +26,16 @@ namespace WorkSpace.Controllers
             this.mapper = _mapper;
         }
 
+        // PUT: api/page/5
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ChangePageById(int id)
+        {
+            //response ActionResult OK 204
+            //response ActionResult 400 incorrect Id
+            //response ActionResult 404 with such id was not found.
 
+            return null;
+        }
 
         //// GET: api/page
         //[HttpGet]
@@ -47,30 +57,25 @@ namespace WorkSpace.Controllers
             //response ActionResult 400 incorrect Id
             //response ActionResult 404 with such id was not found.
 
-            var pageListDTO = await pageService.GetBlocksElementsOfPageById(id);
-            //var blocksElementsResponse = mapper.Map<BlocksElementsResponse>(pageListDTO);!!!!!!!!!Вот это надо замапить
+            var pageDTO = await pageService.GetPageById(id);
+           // var pageResponse = mapper.Map<GetPageByIdResponse>(pageDTO); не могу мапнуть
 
-            return Ok(pageListDTO);
+            return Ok(pageDTO);
         }
 
-        // PUT: api/page/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult> ChangePageById(int id)
-        {
-            //response ActionResult OK 204
-            //response ActionResult 400 incorrect Id
-            //response ActionResult 404 with such id was not found.
-            return null;
-        }
+        
 
         // DELETE: api/page/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DelPageById(int id)
+        public async Task<ActionResult> DeletePageById(int id)
         {
             //response ActionResult 204 OK
             //response ActionResult 400 incorrect Id
             //response ActionResult 404 with such id was not found.
-            return null;
+
+            await pageService.GetPageById(id);
+
+            return Ok();
         }
     }
 }

@@ -10,9 +10,10 @@ namespace WorkSpace.Repositories
     public interface IRepositoryPage
     {
         public IEnumerable<Page> GetList(); // получение всех объектов
-        public Task<IEnumerable<BlocksElementsDTO>> GetPageById(int id); // получение одного объекта по id
+        public Task<PageDTO> GetPageDTOById(int id); // получение одного объекта по id
+        public Task<Page> GetPageById(int id); // получение одного объекта по id
         public Task<Page> Create(Page page); // создание объекта
         public void Update(Page page); // обновление объекта
-        public void Delete(int id); // удаление объекта по id
+        public void Delete(Page page); // удаление объекта по id
     }
 }

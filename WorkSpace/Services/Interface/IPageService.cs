@@ -8,6 +8,7 @@ namespace WorkSpace.Services.Interface
 {
     public interface IPageService
     {
-        Task<IEnumerable<BlocksElementsDTO>> GetBlocksElementsOfPageById(int pageId);
+        Task<PageDTO> GetPageById(int pageId);
+        Task DeletePageById(int pageId);
     }
 }

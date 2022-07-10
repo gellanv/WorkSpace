@@ -7,7 +7,8 @@ using WorkSpace.Models;
 using WorkSpace.DTO;
 using WorkSpace.ViewModels.Response;
 using WorkSpace.ViewModels.Request;
-using static WorkSpace.DTO.BlocksElementsDTO;
+using static WorkSpace.DTO.PageDTO;
+using static WorkSpace.DTO.PageDTO.BlockDTO;
 
 namespace WorkSpace.Mappings
 {
@@ -31,13 +32,14 @@ namespace WorkSpace.Mappings
             CreateMap<ChangeWorkSpaceNameRequest, WorkSpaceDTO>().ReverseMap();
             CreateMap<ChangeNameWorkSpaceResponse, WorkSpaceDTO>().ReverseMap();
 
-            CreateMap<Block, BlocksElementsDTO>().ReverseMap();
-            
-            CreateMap<Element, ElementDTO>().ReverseMap();
-            CreateMap<Element, BlocksElementsDTO>().ReverseMap();
+            CreateMap<Block, BlockDTO>().ReverseMap();
 
-            CreateMap<BlocksElementsDTO.ElementDTO, BlocksElementsResponse.ElementDTO>().ReverseMap();
-            CreateMap<BlocksElementsDTO, BlocksElementsResponse>().ReverseMap();
+            CreateMap<IEnumerable<Element>, IEnumerable<ElementDTO>>().ReverseMap();
+            CreateMap<IEnumerable<Block>, IEnumerable<BlockDTO>>().ReverseMap();
+            CreateMap<Page, PageDTO>().ReverseMap();
+
+           // CreateMap<BlockDTO.ElementDTO, GetPageByIdResponse.ElementDTO>().ReverseMap();
+            CreateMap<BlockDTO, GetPageByIdResponse>().ReverseMap();
             
         }
     } 
