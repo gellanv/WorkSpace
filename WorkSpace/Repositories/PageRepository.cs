@@ -22,18 +22,18 @@ namespace WorkSpace.Repositories
         }
         public async Task<Page> GetPageById(int id)
         {
-            return await context.Pages.Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await context.Pages.Where(x => x.Id == id).Include(b=>b.Blocks).ThenInclude(elem=>elem.Elements).FirstOrDefaultAsync();
         }
 
         public async Task<PageDTO> GetPageDTOById(int id)
         {
-            
             return await context.Pages
                                        .Where(x => x.Id == id)
                                        .Select(page=>new PageDTO
                                             {
                                              Id = id,
                                              Name = page.Name,
+                                             WorkSpaceId = page.WorkSpaceId,
                                              ListBlocks=page.Blocks
                                                 .Select(block => new BlockDTO
                                                  {
@@ -49,9 +49,8 @@ namespace WorkSpace.Repositories
                                             })
                                        
                                        .FirstOrDefaultAsync();
+            ;
 
-
-            
             //return await context.Blocks
             //                            .Where(x => x.PageId == id)
             //                            .Select(block => new BlocksElementsDTO
@@ -67,9 +66,12 @@ namespace WorkSpace.Repositories
             //                            })
             //                            .ToListAsync();
         }
-        public void Create(Page page)
+        public async Task<Page> Create(Page page)
         {
-            context.Pages.Add(page);
+            //Page newPage=null;
+             await context.Pages.AddAsync(page);
+            //newPage.Id = page.Id;
+             return page;
         }
 
         public void Update(Page page)
@@ -105,13 +107,7 @@ namespace WorkSpace.Repositories
             GC.SuppressFinalize(this);
         }
 
-        
-
-        Task<Page> IRepositoryPage.Create(Page page)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         
     }
 }

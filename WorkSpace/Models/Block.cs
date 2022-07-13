@@ -12,9 +12,16 @@ namespace WorkSpace.Models
         public string Coordinates { get; set; }
         public string Style { get; set; }
         public int PageId { get; set; }
-        
-
+     
         public Page Page { get; set; }
         public List<Element> Elements { get; set; }
+    }
+
+    public class Coordinate
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
     }
 }

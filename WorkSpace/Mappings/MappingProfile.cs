@@ -34,17 +34,28 @@ namespace WorkSpace.Mappings
 
             CreateMap<Block, BlockDTO>().ReverseMap();
 
-            CreateMap<IEnumerable<Element>, IEnumerable<ElementDTO>>().ReverseMap();
-            CreateMap<IEnumerable<Block>, IEnumerable<BlockDTO>>().ReverseMap();
+            CreateMap<Element, ElementDTO>().ReverseMap();
+            //CreateMap<IEnumerable<Block>, IEnumerable<BlockDTO>>().ReverseMap();
             CreateMap<Page, PageDTO>().ReverseMap();
+            CreateMap<Page, Page>().ReverseMap();
 
-           // CreateMap<BlockDTO.ElementDTO, GetPageByIdResponse.ElementDTO>().ReverseMap();
-            CreateMap<BlockDTO, GetPageByIdResponse>().ReverseMap();
+            //CreateMap<BlockDTO.ElementDTO, GetPageByIdResponse.ElementDTO>().ReverseMap();
+            CreateMap<PageDTO, GetPageByIdResponse>().ReverseMap();
 
 
             CreateMap<ChangePageNameRequest, ChangePageNameDTO>().ReverseMap();
             CreateMap<ChangePageNameDTO, Page>().ReverseMap();
             CreateMap<ChangePageNameDTO, ChangePageNameResponse>().ReverseMap();
+
+            CreateMap<CreatePageRequest, PageDTO>().ReverseMap();
+            CreateMap<PageDTO, Page>().ReverseMap();
+            CreateMap<PageDTO, CreatePageResponse>().ReverseMap();
+
+
+            CreateMap<CreatePageResponse, PageDTO>().ReverseMap();
+            CreateMap<CreatePageResponse.BlockResponse, PageDTO.BlockDTO>().ReverseMap();
+            CreateMap<CreatePageResponse.BlockResponse.ElementResponse, PageDTO.BlockDTO.ElementDTO>().ReverseMap();
+
 
         }
     } 

@@ -11,5 +11,10 @@ namespace WorkSpace.Services.Interface
         Task<PageDTO> GetPageById(int pageId);
         Task DeletePageById(int pageId);
         Task<ChangePageNameDTO> ChangePageNameById(ChangePageNameDTO changePageNameDTO);
+        Task<PageDTO> CreatePage(PageDTO pageDTO);
+        Task<PageDTO> DuplicatePage(int pageId);
+
+
+
     }
 }

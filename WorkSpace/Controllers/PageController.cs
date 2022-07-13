@@ -20,7 +20,7 @@ namespace WorkSpace.Controllers
 
         private readonly IPageService pageService;
         private readonly IMapper mapper;
-
+        
         public PageController(IPageService _pageService, IMapper _mapper)
         {
             this.pageService = _pageService;
@@ -40,19 +40,28 @@ namespace WorkSpace.Controllers
             //response ActionResult OK 204
             //response ActionResult 400 incorrect Id
             //response ActionResult 404 with such id was not found.
-
-            
         }
 
-        //// GET: api/page
-        //[HttpGet]
-        //public async Task<ActionResult<IQueryable<Object>>> GetAllPagesByIdWorkSpace(int idWorkSpace)
-        //{
-        //    //return IQueryable<GetAllPagesResponse>
-        //    return null;
-        //}
+        [HttpPost("{pageId}")]
+        public async Task<IActionResult> DuplicatePage(int pageId)
+        {
+            //var pageDTO = await pageService.GetPageById(pageId);
+            var copyPage = await pageService.DuplicatePage(pageId);
+            var createPageResponse = mapper.Map<CreatePageResponse>(copyPage);
 
-        
+            return Ok(createPageResponse);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreatePage([FromBody] CreatePageRequest createPageRequest)
+        {
+            var pageDTO = mapper.Map<PageDTO>(createPageRequest);
+            var newPageDTO = await pageService.CreatePage(pageDTO);
+            var createPageResponse = mapper.Map<CreatePageResponse>(newPageDTO);
+
+            return Ok(createPageResponse);
+        }
+
+
 
         // GET: api/page/5
         [HttpGet("{id}")]
@@ -65,9 +74,9 @@ namespace WorkSpace.Controllers
             //response ActionResult 404 with such id was not found.
 
             var pageDTO = await pageService.GetPageById(id);
-           // var pageResponse = mapper.Map<GetPageByIdResponse>(pageDTO); не могу мапнуть
+            var pageResponse = mapper.Map<GetPageByIdResponse>(pageDTO);
 
-            return Ok(pageDTO);
+            return Ok(pageResponse);
         }
 
         
@@ -80,7 +89,7 @@ namespace WorkSpace.Controllers
             //response ActionResult 400 incorrect Id
             //response ActionResult 404 with such id was not found.
 
-            await pageService.GetPageById(id);
+            await pageService.DeletePageById(id);
 
             return Ok();
         }
