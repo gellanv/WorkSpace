@@ -44,7 +44,7 @@ namespace WorkSpace.Controllers
             return Ok(createWorkSpaceResponse);
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllWorkSpace()
+        public async Task<IActionResult> GetAllWorkSpaces()
         {
             //Массив воркспейсов(id, name)
             IEnumerable<WorkSpaceDTO> workSpaceDTOs = await workSpaceService.GetAllWorkSpace(UserId);
@@ -52,32 +52,43 @@ namespace WorkSpace.Controllers
             
             return Ok(getAllWorkSpaceResponses);
         }
-
         //приходит id,name
         // GET: api/workspaces/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWorkSpaceById(int id)
         {
-            
-            var listPages = await workSpaceService.GetWorkSpaceListPagesByID(id);
-            var ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listPages);
-           
-            //list pages(id, name, date)
-            //return Object <GetWorkSpaceResponse>
-            //response ActionResult 400 incorrect Id
-            //response ActionResult 404 with such id was not found.
+            var workSpaceWithListPagesDTO = await workSpaceService.GetWorkSpaceByID(id,UserId);
+            var ListPagesResponse = mapper.Map<GetWorkSpaceByIdResponse>(workSpaceWithListPagesDTO);
 
             return Ok(ListPagesResponse);
         }
 
-        //Замена имени воркспейса - 1 параметр id-workspaca, 2 параметр - object workSpace без айди => workSpace.id= id;
+        // GET: api/workspaces/trash
+        [HttpGet("trash")]
+        public async Task<IActionResult> GetListDeletedPages()
+        {
+            var listDeletedPages = await workSpaceService.GetListDeletedPages(UserId);
+            var ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listDeletedPages);
+
+            return Ok(ListPagesResponse);
+        }
+        // GET: api/workspaces/favorite
+        [HttpGet("favorite")]
+        public async Task<IActionResult> GetListFavoritePages()
+        {
+            var listDeletedPages = await workSpaceService.GetListFavoritePages(UserId);
+            var ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listDeletedPages);
+
+            return Ok(ListPagesResponse);
+        }
+
         // PUT: api/workspaces/5
-        [HttpPut("{id}")]
+        [HttpPut("changeName/{id}")]
         public async Task<IActionResult> ChangeWorkSpaceNameById(int id, ChangeWorkSpaceNameRequest workSpaceRequest)
         {
             var workSpaceDTO = mapper.Map<WorkSpaceDTO>(workSpaceRequest);
             workSpaceDTO.Id = id;
-            var workSpaceChangedName = await workSpaceService.ChangeNameWorkSpace(workSpaceDTO);
+            var workSpaceChangedName = await workSpaceService.ChangeNameWorkSpace(workSpaceDTO,UserId);
 
             var workSpaceResponse = mapper.Map<ChangeNameWorkSpaceResponse>(workSpaceChangedName);
             //update only name
@@ -91,10 +102,8 @@ namespace WorkSpace.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DellWorkSpaceById(int id)
         {
-            await workSpaceService.DeleteWorkSpace(id);
-            //response ActionResult 204 OK
-            //response ActionResult 400 incorrect Id
-            //response ActionResult 404 with such id was not found.
+            await workSpaceService.DeleteWorkSpace(id,UserId);
+
             return Ok();
         }
     }

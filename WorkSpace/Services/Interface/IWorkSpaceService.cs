@@ -12,8 +12,12 @@ namespace WorkSpace.Services.Interface
     {
         Task<IEnumerable<WorkSpaceDTO>> GetAllWorkSpace(string userId);
         Task<WorkSpaceDTO> CreateWorkSpace(WorkSpaceDTO createWorkSpaceDTO);
-        Task<WorkSpaceDTO> ChangeNameWorkSpace(WorkSpaceDTO changeNameWorkSpaceDTO);
-        Task<IEnumerable<WorkSpaceGetPagesDTO>> GetWorkSpaceListPagesByID(int workSpaceId);
-        Task DeleteWorkSpace(int workSpaceId);
+        Task<WorkSpaceDTO> ChangeNameWorkSpace(WorkSpaceDTO changeNameWorkSpaceDTO,string userId);
+        Task<WorkSpaceWithListPagesDTO> GetWorkSpaceByID(int workSpaceId, string userID);
+        Task DeleteWorkSpace(int workSpaceId,string userId);
+        Task<IEnumerable<WorkSpaceDTO>> GetListDeletedPages(string userId);
+        Task<IEnumerable<WorkSpaceDTO>> GetListFavoritePages(string userId);
+
+
     }
 }

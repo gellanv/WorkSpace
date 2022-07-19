@@ -23,11 +23,13 @@ namespace WorkSpace.Mappings
 
             CreateMap<CreateWorkSpaceRequest, WorkSpaceDTO>().ReverseMap();
             CreateMap<WorkSpaceDTO, CreateWorkSpaceResponse>().ReverseMap();
+            CreateMap<Page, WorkSpaceWithListPagesDTO.PagesDTO>().ReverseMap();
 
             CreateMap<GetAllWorkSpaceResponse, WorkSpaceDTO>().ReverseMap();
 
             CreateMap<Page, WorkSpaceGetPagesDTO>().ReverseMap();
             CreateMap<WorkSpaceGetPagesDTO, GetWorkSpaceByIdResponse>().ReverseMap();
+            CreateMap<WorkSpaceWithListPagesDTO, GetWorkSpaceByIdResponse>().ReverseMap();
 
             CreateMap<ChangeWorkSpaceNameRequest, WorkSpaceDTO>().ReverseMap();
             CreateMap<ChangeNameWorkSpaceResponse, WorkSpaceDTO>().ReverseMap();
@@ -35,15 +37,14 @@ namespace WorkSpace.Mappings
             CreateMap<Block, BlockDTO>().ReverseMap();
 
             CreateMap<Element, ElementDTO>().ReverseMap();
-            //CreateMap<IEnumerable<Block>, IEnumerable<BlockDTO>>().ReverseMap();
             CreateMap<Page, PageDTO>().ReverseMap();
             CreateMap<Page, Page>().ReverseMap();
 
-            //CreateMap<BlockDTO.ElementDTO, GetPageByIdResponse.ElementDTO>().ReverseMap();
             CreateMap<PageDTO, GetPageByIdResponse>().ReverseMap();
 
 
-            CreateMap<ChangePageNameRequest, ChangePageNameDTO>().ReverseMap();
+            CreateMap<PageRequest, ChangePageNameDTO>().ReverseMap();
+            CreateMap<PageRequest, PageDTO>().ReverseMap();
             CreateMap<ChangePageNameDTO, Page>().ReverseMap();
             CreateMap<ChangePageNameDTO, ChangePageNameResponse>().ReverseMap();
 

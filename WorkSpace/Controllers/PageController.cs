@@ -29,7 +29,7 @@ namespace WorkSpace.Controllers
 
         // PUT: api/page/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> ChangePageById(int id, ChangePageNameRequest changePageNameRequest)
+        public async Task<ActionResult> ChangePageNameById(int id, PageRequest changePageNameRequest)
         {
             var changePageNameDTO = mapper.Map<ChangePageNameDTO>(changePageNameRequest);
             changePageNameDTO.Id = id;
@@ -42,15 +42,43 @@ namespace WorkSpace.Controllers
             //response ActionResult 404 with such id was not found.
         }
 
-        [HttpPost("{pageId}")]
-        public async Task<IActionResult> DuplicatePage(int pageId)
+        //Если отставляю просто [HttpPut("{id}")] тогда идет конфликт(api/{controller}/{action}/{eventId})
+        // PUT: api/page/5
+        [HttpPut("AddToFavourite/{id}")]
+        public async Task<ActionResult> AddRemoveToFavouritesById(int id, PageRequest addToFavouritesRequest, bool favourite)
+        {
+            var favouritePageDTO = mapper.Map<PageDTO>(addToFavouritesRequest);
+            favouritePageDTO.Id = id;
+            favouritePageDTO.Favourite = favourite;
+            var page = await pageService.AddRemoveFavouritesById(favouritePageDTO);
+            //var pageResponse = mapper.Map<ChangePageNameResponse>(page);
+
+            return Ok(/*pageResponse*/);
+        }
+
+        // PUT: api/page/5
+        [HttpPut("PushPullPageToTrash/{id}")]
+        public async Task<ActionResult> PushPullPageToTrashById(int id, PageRequest trashPageRequest, bool deleted)
+        {
+            var trashPageDTO = mapper.Map<PageDTO>(trashPageRequest);
+            trashPageDTO.Id = id;
+            trashPageDTO.Deleted = deleted;
+            var page = await pageService.PushPullPageToTrashById(trashPageDTO);
+            //var pageResponse = mapper.Map<ChangePageNameResponse>(page);
+
+            return Ok(/*pageResponse*/);
+        }
+
+        [HttpPost("duplicate/{id}")]
+        public async Task<IActionResult> DuplicatePage(int id)
         {
             //var pageDTO = await pageService.GetPageById(pageId);
-            var copyPage = await pageService.DuplicatePage(pageId);
+            var copyPage = await pageService.DuplicatePage(id);
             var createPageResponse = mapper.Map<CreatePageResponse>(copyPage);
 
             return Ok(createPageResponse);
         }
+
         [HttpPost]
         public async Task<IActionResult> CreatePage([FromBody] CreatePageRequest createPageRequest)
         {

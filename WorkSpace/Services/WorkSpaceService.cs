@@ -33,6 +33,50 @@ namespace WorkSpace.Services
             return workSpacesDTO;
         }
 
+        public async Task<WorkSpaceWithListPagesDTO> GetWorkSpaceByID(int workSpaceId, string userID)
+        {
+            if (workSpaceId > 0)
+            {
+
+                var workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
+
+                if (workSpace != null)
+                {
+                    if (workSpace.UserId == userID)
+                    {
+                        var listPages = await unitOfWork.RepositoryWorkSpace.GetListPagesNotDeleted(workSpaceId);
+
+                        var workSpaceWithListPagesDTO = new WorkSpaceWithListPagesDTO();
+                        workSpaceWithListPagesDTO.Id = workSpaceId;
+                        workSpaceWithListPagesDTO.Name = workSpace.Name;
+                        workSpaceWithListPagesDTO.Pages = mapper.Map<IEnumerable<WorkSpaceWithListPagesDTO.PagesDTO>>(listPages);
+
+                        return workSpaceWithListPagesDTO;
+
+                    }
+                    else throw new Exception("нет доступа");
+
+                }
+                else throw new Exception("такого id нет в базе");
+
+            }
+            else throw new Exception("не верный id");
+
+        }
+        public async Task<IEnumerable<WorkSpaceDTO>> GetListDeletedPages(string userId)
+        {
+            var workSpaces = await unitOfWork.RepositoryWorkSpace.GetListPagesDeleted(userId);
+            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
+
+            return workSpacesDTO;
+        }
+        public async Task<IEnumerable<WorkSpaceDTO>> GetListFavoritePages(string userId)
+        {
+            var workSpaces = await unitOfWork.RepositoryWorkSpace.GetListPagesDeleted(userId);
+            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
+
+            return workSpacesDTO;
+        }
         public async Task<WorkSpaceDTO> CreateWorkSpace(WorkSpaceDTO createWorkSpaceDTO)
         {
             var mapToWorkSpaceModel = mapper.Map<Models.WorkSpace>(createWorkSpaceDTO);
@@ -42,51 +86,56 @@ namespace WorkSpace.Services
             var AddNewWorkSpace = await unitOfWork.RepositoryWorkSpace.Create(mapToWorkSpaceModel);
             await unitOfWork.SaveAsync();
             var newDTOWorkSpace = mapper.Map<WorkSpaceDTO>(AddNewWorkSpace);
-           
+
             return newDTOWorkSpace;
         }
 
-        public async Task<IEnumerable<WorkSpaceGetPagesDTO>> GetWorkSpaceListPagesByID(int workSpaceId)
+        public async Task<WorkSpaceDTO> ChangeNameWorkSpace(WorkSpaceDTO changeNameWorkSpaceDTO, string userId)
         {
-            
-            var listPages = await unitOfWork.RepositoryWorkSpace.GetPages(workSpaceId);
-            var listPagesDTOs = mapper.Map<IEnumerable<WorkSpaceGetPagesDTO>>(listPages);
+            if (changeNameWorkSpaceDTO.Id > 0)
+            {
+                var workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(changeNameWorkSpaceDTO.Id);
 
-            return listPagesDTOs;
+                if (workSpace != null)
+                {
+                    if (workSpace.UserId == userId)
+                    {
+                        workSpace.Name = changeNameWorkSpaceDTO.Name;
 
+                        unitOfWork.RepositoryWorkSpace.Update(workSpace);
+                        await unitOfWork.SaveAsync();
+                        var DTO = mapper.Map<WorkSpaceDTO>(workSpace);
 
+                        return DTO;
+                    }
+                    else throw new Exception("нет доступа");
+                }
+                else throw new Exception("такого id нет в базе");
+            }
+            else throw new Exception("не верный id");
         }
 
-        public async Task<WorkSpaceDTO> ChangeNameWorkSpace(WorkSpaceDTO changeNameWorkSpaceDTO)
-        {
-            var modelWorkSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(changeNameWorkSpaceDTO.Id);
-            modelWorkSpace.Name = changeNameWorkSpaceDTO.Name;
-
-            unitOfWork.RepositoryWorkSpace.Update(modelWorkSpace);
-            await unitOfWork.SaveAsync();
-            var DTO = mapper.Map<WorkSpaceDTO>(modelWorkSpace);
-            
-            return DTO;
-
-        }
-
-        public async Task/*<IActionResult>*/ DeleteWorkSpace(int workSpaceId)
+        public async Task DeleteWorkSpace(int workSpaceId, string userId)
         {
             if (workSpaceId > 0)
             {
                 var workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
-                if (workSpace != null)
-                {
-                    unitOfWork.RepositoryWorkSpace.Delete(workSpace);
-                       await unitOfWork.SaveAsync();
-                    //return OkResult;
-                }
-                else throw new Exception("такого id не существует");
-            }
-            else throw new Exception("нет id");
-            
-        }
+                
+                    if (workSpace != null)
+                    {
+                        if (workSpace.UserId == userId)
+                        {
+                            unitOfWork.RepositoryWorkSpace.Delete(workSpace);
+                            await unitOfWork.SaveAsync();
+                        }
+                        else throw new Exception("нет доступа");
 
-        
+                    }else throw new Exception("такого id нет в базе");
+
+
+            }else throw new Exception("не верный id");
+
+
+        }
     }
 }

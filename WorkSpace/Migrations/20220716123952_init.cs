@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WorkSpace.Migrations
 {
-    public partial class workspaceControllerFull : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -184,6 +184,9 @@ namespace WorkSpace.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PersonalPage = table.Column<bool>(type: "bit", nullable: false),
+                    Favourite = table.Column<bool>(type: "bit", nullable: false),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false),
                     WorkSpaceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

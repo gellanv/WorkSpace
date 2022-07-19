@@ -10,6 +10,8 @@ namespace WorkSpace.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Favourite { get; set; }
+        public bool Deleted { get; set; }
         public int WorkSpaceId { get; set; }
         public IEnumerable<BlockDTO> ListBlocks { get; set; }
         public class BlockDTO

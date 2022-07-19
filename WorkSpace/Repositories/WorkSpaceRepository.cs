@@ -32,9 +32,29 @@ namespace WorkSpace.Repositories
         {
             return context.WorkSpaces.ToList();
         }
-        public async Task<IEnumerable<Page>> GetPages(int workSpaceId)
+        public async Task<IEnumerable<Page>> GetListPages(int workSpaceId)
         {
             return await context.Pages.Where(x => x.WorkSpaceId == workSpaceId).ToListAsync();
+        }
+        public async Task<IEnumerable<Page>> GetListPagesNotDeleted(int workSpaceId)
+        {
+            return await context.Pages.Where(x => x.WorkSpaceId == workSpaceId && x.Deleted==false).ToListAsync();
+            
+        }
+
+        //GetListPagesDeleted - НЕ РАБОТАЕТ(нужно переделать)
+        public async Task<IEnumerable<Page>> GetListPagesDeleted(string userId)
+        {
+            var d = context.WorkSpaces.Where(x => x.UserId == userId).Include(p=>p.Pages).ThenInclude(l => l.Deleted == false).Select(p=>p.Pages);
+            //var l = d.Select(p=>p.Pages)
+            return (IEnumerable<Page>)d;
+        }
+        //GetListFavoritePages - НЕ РАБОТАЕТ(нужно переделать)
+        public async Task<IEnumerable<Page>> GetListFavoritePages(string userId)
+        {
+            var d = context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ThenInclude(l => l.Deleted == false).Select(p => p.Pages);
+            //var l = d.Select(p=>p.Pages)
+            return (IEnumerable<Page>)d;
         }
         public async Task<Models.WorkSpace> Create(Models.WorkSpace workSpace)
         {
@@ -45,7 +65,6 @@ namespace WorkSpace.Repositories
         {
             var findWorkSpace = await context.WorkSpaces.FindAsync(changeNameWorkSpaceDTO.Id);
             findWorkSpace.Name = changeNameWorkSpaceDTO.Name;
-
             
             return findWorkSpace;
         }

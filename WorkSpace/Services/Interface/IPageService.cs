@@ -14,7 +14,8 @@ namespace WorkSpace.Services.Interface
         Task<PageDTO> CreatePage(PageDTO pageDTO);
         Task<PageDTO> DuplicatePage(int pageId);
 
-
+        Task<PageDTO> AddRemoveFavouritesById(PageDTO addRemoveToFavouritesByIdDTO);
+        Task<PageDTO> PushPullPageToTrashById(PageDTO trashPageDTO);
 
     }
 }

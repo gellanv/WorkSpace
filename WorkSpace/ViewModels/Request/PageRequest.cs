@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WorkSpace.ViewModels.Request
 {
-    public class ChangePageNameRequest
+    public class PageRequest
     {
         public string Name { get; set; }
     }
