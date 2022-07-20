@@ -108,5 +108,20 @@ namespace WorkSpace.Services
 
             return newPageDTO;
         }
+
+        public async Task<IEnumerable<WorkSpaceDTO>> GetListDeletedPages(string userId)
+        {
+            var workSpaces = await unitOfWork.RepositoryPage.GetListPagesDeleted(userId);
+            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
+
+            return workSpacesDTO;
+        }
+        public async Task<IEnumerable<WorkSpaceDTO>> GetListFavoritePages(string userId)
+        {
+            var workSpaces = await unitOfWork.RepositoryPage.GetListPagesDeleted(userId);
+            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
+
+            return workSpacesDTO;
+        }
     }
 }

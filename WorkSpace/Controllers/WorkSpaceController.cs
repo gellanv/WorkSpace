@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkSpace.DTO;
-using WorkSpace.Services;
 using WorkSpace.Services.Interface;
 using WorkSpace.ViewModels.Request;
 using WorkSpace.ViewModels.Response;
 
 namespace WorkSpace.Controllers
 {
-    
+
     [Route("api/workspaces")]
     [ApiController]
 
@@ -31,78 +25,84 @@ namespace WorkSpace.Controllers
             this.mapper = _mapper;
         }
 
-        //viemodel - string name, dto - 
+        /// <summary>
+        /// Create new WorkSpace
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="400">The Name field is required</response>
+        /// <response code="500">The UserId field is required</response>
+        // POST: api/workspaces
         [HttpPost]
         public async Task<IActionResult> CreateWorkSpace([FromBody] CreateWorkSpaceRequest createWorkSpaceRequest)
         {
-            
-            var workSpaceDTO = mapper.Map<WorkSpaceDTO>(createWorkSpaceRequest);
+
+            WorkSpaceDTO workSpaceDTO = mapper.Map<WorkSpaceDTO>(createWorkSpaceRequest);
             workSpaceDTO.UserId = UserId;
-            var newWorkSpaceDTO = await workSpaceService.CreateWorkSpace(workSpaceDTO);
+            WorkSpaceDTO newWorkSpaceDTO = await workSpaceService.CreateWorkSpace(workSpaceDTO);
             CreateWorkSpaceResponse createWorkSpaceResponse = mapper.Map<CreateWorkSpaceResponse>(newWorkSpaceDTO);
-           
+
             return Ok(createWorkSpaceResponse);
         }
+
+        /// <summary>
+        /// Get all WorkSpaces
+        /// </summary>
+        /// <response code="200">Success</response> 
+        // GET: api/workspaces
         [HttpGet]
         public async Task<IActionResult> GetAllWorkSpaces()
         {
             //Массив воркспейсов(id, name)
             IEnumerable<WorkSpaceDTO> workSpaceDTOs = await workSpaceService.GetAllWorkSpace(UserId);
             IEnumerable<GetAllWorkSpaceResponse> getAllWorkSpaceResponses = mapper.Map<IEnumerable<GetAllWorkSpaceResponse>>(workSpaceDTOs);
-            
+
             return Ok(getAllWorkSpaceResponses);
         }
-        //приходит id,name
+
+
+        /// <summary>
+        /// Get WorkSpace by id
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="500">Id isn't valid / The object wasn't found</response>
         // GET: api/workspaces/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWorkSpaceById(int id)
         {
-            var workSpaceWithListPagesDTO = await workSpaceService.GetWorkSpaceByID(id,UserId);
-            var ListPagesResponse = mapper.Map<GetWorkSpaceByIdResponse>(workSpaceWithListPagesDTO);
+            WorkSpaceWithListPagesDTO workSpaceWithListPagesDTO = await workSpaceService.GetWorkSpaceByID(id, UserId);
+            GetWorkSpaceByIdResponse ListPagesResponse = mapper.Map<GetWorkSpaceByIdResponse>(workSpaceWithListPagesDTO);
 
             return Ok(ListPagesResponse);
         }
 
-        // GET: api/workspaces/trash
-        [HttpGet("trash")]
-        public async Task<IActionResult> GetListDeletedPages()
-        {
-            var listDeletedPages = await workSpaceService.GetListDeletedPages(UserId);
-            var ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listDeletedPages);
-
-            return Ok(ListPagesResponse);
-        }
-        // GET: api/workspaces/favorite
-        [HttpGet("favorite")]
-        public async Task<IActionResult> GetListFavoritePages()
-        {
-            var listDeletedPages = await workSpaceService.GetListFavoritePages(UserId);
-            var ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listDeletedPages);
-
-            return Ok(ListPagesResponse);
-        }
-
+        /// <summary>
+        /// Change WorkSpace name by Id
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="500">Id isn't valid / The object wasn't found /The name field is empty/ </response>
         // PUT: api/workspaces/5
-        [HttpPut("changeName/{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> ChangeWorkSpaceNameById(int id, ChangeWorkSpaceNameRequest workSpaceRequest)
         {
-            var workSpaceDTO = mapper.Map<WorkSpaceDTO>(workSpaceRequest);
+            WorkSpaceDTO workSpaceDTO = mapper.Map<WorkSpaceDTO>(workSpaceRequest);
             workSpaceDTO.Id = id;
-            var workSpaceChangedName = await workSpaceService.ChangeNameWorkSpace(workSpaceDTO,UserId);
+            workSpaceDTO.UserId = UserId;
+            WorkSpaceDTO workSpaceChangedName = await workSpaceService.ChangeNameWorkSpace(workSpaceDTO);
+            ChangeNameWorkSpaceResponse workSpaceResponse = mapper.Map<ChangeNameWorkSpaceResponse>(workSpaceChangedName);
 
-            var workSpaceResponse = mapper.Map<ChangeNameWorkSpaceResponse>(workSpaceChangedName);
-            //update only name
-            //response ActionResult OK 204
-            //response ActionResult 400 incorrect Id
-            //response ActionResult 404 with such id was not found.
             return Ok(workSpaceResponse);
         }
 
+        /// <summary>
+        /// Delete WorkSpace by Id
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="500">Id isn't valid / The object wasn't found</response>
         // DELETE: api/workspaces/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DellWorkSpaceById(int id)
         {
-            await workSpaceService.DeleteWorkSpace(id,UserId);
+            await workSpaceService.DeleteWorkSpace(id, UserId);
 
             return Ok();
         }

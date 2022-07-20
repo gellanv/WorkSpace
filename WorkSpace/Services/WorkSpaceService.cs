@@ -1,16 +1,13 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using AutoMapper;
 using WorkSpace.DTO;
-using WorkSpace.Mappings;
 using WorkSpace.Models;
-using WorkSpace.Repositories;
 using WorkSpace.Repositories.Interface;
 using WorkSpace.Services.Interface;
-using WorkSpace.ViewModels.Response;
+using DataAnnotationValidator = System.ComponentModel.DataAnnotations.Validator;
 
 namespace WorkSpace.Services
 {
@@ -27,115 +24,102 @@ namespace WorkSpace.Services
 
         public async Task<IEnumerable<WorkSpaceDTO>> GetAllWorkSpace(string userId)
         {
-            var workSpaces = await unitOfWork.RepositoryWorkSpace.GetWorkSpaces(userId);
-            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
+            IEnumerable<Models.WorkSpace> workSpaces = await unitOfWork.RepositoryWorkSpace.GetWorkSpaces(userId);
+            IEnumerable<WorkSpaceDTO> workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
 
             return workSpacesDTO;
         }
 
         public async Task<WorkSpaceWithListPagesDTO> GetWorkSpaceByID(int workSpaceId, string userID)
         {
-            if (workSpaceId > 0)
+            CheckId(workSpaceId);
+
+            Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
+            CheckObjectForNull(workSpace);
+
+            if (workSpace.UserId == userID)
             {
+                IEnumerable<Page> listPages = await unitOfWork.RepositoryPage.GetListPagesNotDeleted(workSpaceId);
 
-                var workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
+                WorkSpaceWithListPagesDTO workSpaceWithListPagesDTO = new WorkSpaceWithListPagesDTO();
+                workSpaceWithListPagesDTO.Id = workSpaceId;
+                workSpaceWithListPagesDTO.Name = workSpace.Name;
+                workSpaceWithListPagesDTO.Pages = mapper.Map<IEnumerable<WorkSpaceWithListPagesDTO.PagesDTO>>(listPages);
 
-                if (workSpace != null)
-                {
-                    if (workSpace.UserId == userID)
-                    {
-                        var listPages = await unitOfWork.RepositoryWorkSpace.GetListPagesNotDeleted(workSpaceId);
-
-                        var workSpaceWithListPagesDTO = new WorkSpaceWithListPagesDTO();
-                        workSpaceWithListPagesDTO.Id = workSpaceId;
-                        workSpaceWithListPagesDTO.Name = workSpace.Name;
-                        workSpaceWithListPagesDTO.Pages = mapper.Map<IEnumerable<WorkSpaceWithListPagesDTO.PagesDTO>>(listPages);
-
-                        return workSpaceWithListPagesDTO;
-
-                    }
-                    else throw new Exception("нет доступа");
-
-                }
-                else throw new Exception("такого id нет в базе");
-
+                return workSpaceWithListPagesDTO;
             }
-            else throw new Exception("не верный id");
-
+            else throw new Exception("No access");
         }
-        public async Task<IEnumerable<WorkSpaceDTO>> GetListDeletedPages(string userId)
-        {
-            var workSpaces = await unitOfWork.RepositoryWorkSpace.GetListPagesDeleted(userId);
-            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
 
-            return workSpacesDTO;
-        }
-        public async Task<IEnumerable<WorkSpaceDTO>> GetListFavoritePages(string userId)
-        {
-            var workSpaces = await unitOfWork.RepositoryWorkSpace.GetListPagesDeleted(userId);
-            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
-
-            return workSpacesDTO;
-        }
         public async Task<WorkSpaceDTO> CreateWorkSpace(WorkSpaceDTO createWorkSpaceDTO)
         {
-            var mapToWorkSpaceModel = mapper.Map<Models.WorkSpace>(createWorkSpaceDTO);
+            CheckObjectForValid(createWorkSpaceDTO);
+            Models.WorkSpace mapToWorkSpaceModel = mapper.Map<Models.WorkSpace>(createWorkSpaceDTO);
             mapToWorkSpaceModel.DateCreate = DateTime.Now;
 
-
-            var AddNewWorkSpace = await unitOfWork.RepositoryWorkSpace.Create(mapToWorkSpaceModel);
+            Models.WorkSpace AddNewWorkSpace = await unitOfWork.RepositoryWorkSpace.Create(mapToWorkSpaceModel);
             await unitOfWork.SaveAsync();
-            var newDTOWorkSpace = mapper.Map<WorkSpaceDTO>(AddNewWorkSpace);
+            WorkSpaceDTO newDTOWorkSpace = mapper.Map<WorkSpaceDTO>(AddNewWorkSpace);
 
             return newDTOWorkSpace;
         }
 
-        public async Task<WorkSpaceDTO> ChangeNameWorkSpace(WorkSpaceDTO changeNameWorkSpaceDTO, string userId)
+        public async Task<WorkSpaceDTO> ChangeNameWorkSpace(WorkSpaceDTO changeNameWorkSpaceDTO)
         {
-            if (changeNameWorkSpaceDTO.Id > 0)
+            CheckObjectForValid(changeNameWorkSpaceDTO);
+            CheckId(changeNameWorkSpaceDTO.Id);
+
+            Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(changeNameWorkSpaceDTO.Id);
+            CheckObjectForNull(workSpace);
+
+            if (workSpace.UserId == changeNameWorkSpaceDTO.UserId)
             {
-                var workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(changeNameWorkSpaceDTO.Id);
+                workSpace.Name = changeNameWorkSpaceDTO.Name;
+                unitOfWork.RepositoryWorkSpace.Update(workSpace);
+                await unitOfWork.SaveAsync();
+                WorkSpaceDTO workSpaceDTO = mapper.Map<WorkSpaceDTO>(workSpace);
 
-                if (workSpace != null)
-                {
-                    if (workSpace.UserId == userId)
-                    {
-                        workSpace.Name = changeNameWorkSpaceDTO.Name;
-
-                        unitOfWork.RepositoryWorkSpace.Update(workSpace);
-                        await unitOfWork.SaveAsync();
-                        var DTO = mapper.Map<WorkSpaceDTO>(workSpace);
-
-                        return DTO;
-                    }
-                    else throw new Exception("нет доступа");
-                }
-                else throw new Exception("такого id нет в базе");
+                return workSpaceDTO;
             }
-            else throw new Exception("не верный id");
+            else throw new Exception("No access");
         }
 
         public async Task DeleteWorkSpace(int workSpaceId, string userId)
         {
-            if (workSpaceId > 0)
+            CheckId(workSpaceId);
+
+            Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
+            CheckObjectForNull(workSpace);
+
+            if (workSpace.UserId == userId)
             {
-                var workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
-                
-                    if (workSpace != null)
-                    {
-                        if (workSpace.UserId == userId)
-                        {
-                            unitOfWork.RepositoryWorkSpace.Delete(workSpace);
-                            await unitOfWork.SaveAsync();
-                        }
-                        else throw new Exception("нет доступа");
+                unitOfWork.RepositoryWorkSpace.Delete(workSpace);
+                await unitOfWork.SaveAsync();
+            }
+            else throw new Exception("No access");
+        }
 
-                    }else throw new Exception("такого id нет в базе");
+        //VALIDATION Вынести в отдельный класс
+        public void CheckObjectForValid(object instance)
+        {
+            ValidationContext validationContext = new ValidationContext(instance);
+            DataAnnotationValidator.ValidateObject(instance, validationContext, true);
+        }
 
+        public void CheckId(int id)
+        {
+            if (id <= 0)
+            {
+                throw new Exception("Id isn't valid");
+            }
+        }
 
-            }else throw new Exception("не верный id");
-
-
+        public void CheckObjectForNull(object instance)
+        {
+            if (instance == null)
+            {
+                throw new Exception("The object wasn't found");
+            }
         }
     }
 }

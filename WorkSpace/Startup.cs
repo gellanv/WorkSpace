@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.IO;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -74,6 +75,8 @@ namespace WorkSpace
                     Description = "JWT Authorization header using the Bearer scheme."
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement { { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, new string[] { } } });
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "WorkSpace.xml");
+                c.IncludeXmlComments(filePath);
             });
 
             services.AddScoped<IIdentityService, IdentityService>();

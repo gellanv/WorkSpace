@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WorkSpace.Migrations
 {
     [DbContext(typeof(WorkSpaceContext))]
-    [Migration("20220716123952_init")]
-    partial class init
+    [Migration("20220720174603_New")]
+    partial class New
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -121,5 +121,24 @@ namespace WorkSpace.Controllers
 
             return Ok();
         }
+
+        //// GET: api/workspaces/trash
+        //[HttpGet("trash")]
+        //public async Task<IActionResult> GetListDeletedPages()
+        //{
+        //    IEnumerable<WorkSpaceDTO> listDeletedPages = await workSpaceService.GetListDeletedPages(UserId);
+        //    IEnumerable<GetWorkSpaceByIdResponse> ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listDeletedPages);
+
+        //    return Ok(ListPagesResponse);
+        //}
+        //// GET: api/workspaces/favorite
+        //[HttpGet("favorite")]
+        //public async Task<IActionResult> GetListFavoritePages()
+        //{
+        //    var listDeletedPages = await workSpaceService.GetListFavoritePages(UserId);
+        //    var ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listDeletedPages);
+
+        //    return Ok(ListPagesResponse);
+        //}
     }
 }

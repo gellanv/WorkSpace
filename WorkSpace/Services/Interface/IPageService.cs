@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using WorkSpace.DTO;
 
@@ -16,6 +14,8 @@ namespace WorkSpace.Services.Interface
 
         Task<PageDTO> AddRemoveFavouritesById(PageDTO addRemoveToFavouritesByIdDTO);
         Task<PageDTO> PushPullPageToTrashById(PageDTO trashPageDTO);
+        Task<IEnumerable<WorkSpaceDTO>> GetListDeletedPages(string userId);
+        Task<IEnumerable<WorkSpaceDTO>> GetListFavoritePages(string userId);
 
     }
 }
