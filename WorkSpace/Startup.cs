@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using WorkSpace.Behaviors;
+using WorkSpace.Behaviors.Interface;
 using WorkSpace.Helpers;
 using WorkSpace.Mappings;
 using WorkSpace.Models;
@@ -88,8 +90,8 @@ namespace WorkSpace
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
-           
 
+            services.AddSingleton<IValidation,Validation>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
 

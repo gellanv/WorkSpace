@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
+using WorkSpace.Behaviors;
+using WorkSpace.Behaviors.Interface;
 using WorkSpace.DTO;
 using WorkSpace.Models;
 using WorkSpace.Repositories.Interface;
@@ -15,11 +17,12 @@ namespace WorkSpace.Services
     {
         readonly IUnitOfWork unitOfWork;
         readonly IMapper mapper;
-
-        public WorkSpaceService(IUnitOfWork _unitOfWork, IMapper _mapper)
+        readonly IValidation validation;
+        public WorkSpaceService(IUnitOfWork _unitOfWork, IMapper _mapper, IValidation _validation)
         {
             this.unitOfWork = _unitOfWork;
             this.mapper = _mapper;
+            validation = _validation;
         }
 
         public async Task<IEnumerable<WorkSpaceDTO>> GetAllWorkSpace(string userId)
@@ -32,10 +35,10 @@ namespace WorkSpace.Services
 
         public async Task<WorkSpaceWithListPagesDTO> GetWorkSpaceByID(int workSpaceId, string userID)
         {
-            CheckId(workSpaceId);
+            validation.CheckId(workSpaceId);
 
             Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
-            CheckObjectForNull(workSpace);
+            validation.CheckObjectForNull(workSpace);
 
             if (workSpace.UserId == userID)
             {
@@ -53,7 +56,7 @@ namespace WorkSpace.Services
 
         public async Task<WorkSpaceDTO> CreateWorkSpace(WorkSpaceDTO createWorkSpaceDTO)
         {
-            CheckObjectForValid(createWorkSpaceDTO);
+            validation.CheckObjectForValid(createWorkSpaceDTO);
             Models.WorkSpace mapToWorkSpaceModel = mapper.Map<Models.WorkSpace>(createWorkSpaceDTO);
             mapToWorkSpaceModel.DateCreate = DateTime.Now;
 
@@ -66,11 +69,11 @@ namespace WorkSpace.Services
 
         public async Task<WorkSpaceDTO> ChangeNameWorkSpace(WorkSpaceDTO changeNameWorkSpaceDTO)
         {
-            CheckObjectForValid(changeNameWorkSpaceDTO);
-            CheckId(changeNameWorkSpaceDTO.Id);
+            validation.CheckObjectForValid(changeNameWorkSpaceDTO);
+            validation.CheckId(changeNameWorkSpaceDTO.Id);
 
             Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(changeNameWorkSpaceDTO.Id);
-            CheckObjectForNull(workSpace);
+            validation.CheckObjectForNull(workSpace);
 
             if (workSpace.UserId == changeNameWorkSpaceDTO.UserId)
             {
@@ -86,10 +89,10 @@ namespace WorkSpace.Services
 
         public async Task DeleteWorkSpace(int workSpaceId, string userId)
         {
-            CheckId(workSpaceId);
+            validation.CheckId(workSpaceId);
 
             Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
-            CheckObjectForNull(workSpace);
+            validation.CheckObjectForNull(workSpace);
 
             if (workSpace.UserId == userId)
             {
@@ -99,27 +102,6 @@ namespace WorkSpace.Services
             else throw new Exception("No access");
         }
 
-        //VALIDATION Вынести в отдельный класс
-        public void CheckObjectForValid(object instance)
-        {
-            ValidationContext validationContext = new ValidationContext(instance);
-            DataAnnotationValidator.ValidateObject(instance, validationContext, true);
-        }
-
-        public void CheckId(int id)
-        {
-            if (id <= 0)
-            {
-                throw new Exception("Id isn't valid");
-            }
-        }
-
-        public void CheckObjectForNull(object instance)
-        {
-            if (instance == null)
-            {
-                throw new Exception("The object wasn't found");
-            }
-        }
+        
     }
 }
