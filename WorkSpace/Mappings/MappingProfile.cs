@@ -52,7 +52,7 @@ namespace WorkSpace.Mappings
             CreateMap<CreatePageRequest, PageDTO>().ReverseMap();
             CreateMap<PageDTO, Page>().ReverseMap();
             CreateMap<PageDTO, CreatePageResponse>().ReverseMap();
-
+            CreateMap<PageDTO, GetListPagesResponse>().ReverseMap();
 
             CreateMap<CreatePageResponse, PageDTO>().ReverseMap();
             CreateMap<CreatePageResponse.BlockResponse, PageDTO.BlockDTO>().ReverseMap();

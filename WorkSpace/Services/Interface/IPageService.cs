@@ -14,8 +14,7 @@ namespace WorkSpace.Services.Interface
         Task<PageDTO> DuplicatePage(string UserId, int pageId);
         Task AddRemoveFavouritesById(string UserId, int id);
         Task PushPullPageToTrashById(string UserId, int id);
-        Task<IEnumerable<WorkSpaceDTO>> GetListDeletedPages(string userId);
-        Task<IEnumerable<WorkSpaceDTO>> GetListFavoritePages(string userId);
-
+        Task<IEnumerable<PageDTO>> GetListDeletedPages(string userId);
+        Task<IEnumerable<PageDTO>> GetListFavoritePages(string userId);
     }
 }

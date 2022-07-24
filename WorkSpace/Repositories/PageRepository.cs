@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WorkSpace.DTO;
 using WorkSpace.Models;
 using static WorkSpace.DTO.PageDTO;
@@ -22,54 +22,39 @@ namespace WorkSpace.Repositories
         }
         public async Task<Page> GetPageById(int id)
         {
-            return await context.Pages.Where(x => x.Id == id).Include(b=>b.Blocks).ThenInclude(elem=>elem.Elements).FirstOrDefaultAsync();
+            return await context.Pages.Where(x => x.Id == id).Include(b => b.Blocks).ThenInclude(elem => elem.Elements).FirstOrDefaultAsync();
         }
 
         public async Task<PageDTO> GetPageDTOById(int id)
         {
             return await context.Pages
                                        .Where(x => x.Id == id)
-                                       .Select(page=>new PageDTO
-                                            {
-                                             Id = id,
-                                             Name = page.Name,
-                                             WorkSpaceId = page.WorkSpaceId,
-                                             ListBlocks=page.Blocks
+                                       .Select(page => new PageDTO
+                                       {
+                                           Id = id,
+                                           Name = page.Name,
+                                           WorkSpaceId = page.WorkSpaceId,
+                                           ListBlocks = page.Blocks
                                                 .Select(block => new BlockDTO
-                                                 {
-                                                     Id = block.Id,
-                                                     Title = block.Title,
-                                                     ListElements = block.Elements
+                                                {
+                                                    Id = block.Id,
+                                                    Title = block.Title,
+                                                    ListElements = block.Elements
                                                                            .Select(elem => new BlockDTO.ElementDTO
                                                                            {
                                                                                Id = elem.Id,
                                                                                ContentHtml = elem.ContentHtml
                                                                            }),
-                                                 })
-                                            })
-                                       
-                                       .FirstOrDefaultAsync();
-            ;
+                                                })
+                                       })
 
-            //return await context.Blocks
-            //                            .Where(x => x.PageId == id)
-            //                            .Select(block => new BlocksElementsDTO
-            //                            {
-            //                                Id = block.Id,
-            //                                Title = block.Title,
-            //                                Elements = block.Elements
-            //                                .Select(elem => new BlocksElementsDTO.ElementDTO
-            //                                {
-            //                                    Id = elem.Id,
-            //                                    ContentHtml = elem.ContentHtml
-            //                                }),
-            //                            })
-            //                            .ToListAsync();
+                                       .FirstOrDefaultAsync();
+
         }
         public async Task<Page> Create(Page page)
         {
-             await context.Pages.AddAsync(page);
-             return page;
+            await context.Pages.AddAsync(page);
+            return page;
         }
 
         public void Update(Page page)
@@ -81,9 +66,6 @@ namespace WorkSpace.Repositories
         {
             context.Pages.Remove(page);
         }
-        
-
-
 
         private bool disposed = false;
 
@@ -105,25 +87,41 @@ namespace WorkSpace.Repositories
             GC.SuppressFinalize(this);
         }
 
-        //GetListPagesDeleted - НЕ РАБОТАЕТ(нужно переделать)
         public async Task<IEnumerable<Page>> GetListPagesDeleted(string userId)
         {
-            var d = context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ThenInclude(l => l.Deleted == false).Select(p => p.Pages);
-            //var l = d.Select(p=>p.Pages)
-            return (IEnumerable<Page>)d;
+            List<Models.WorkSpace> workSpaceUser = context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ToList();
+            List<Page> listPage = new List<Page>();
+            for (int i = 0; i < workSpaceUser.Count(); i++)
+            {
+                for (int j = 0; j < workSpaceUser[i].Pages.Count(); j++)
+                {
+                    if (workSpaceUser[i].Pages[j].Deleted == true)
+                        listPage.Add(workSpaceUser[i].Pages[j]);
+                }
+            }
+
+            return (listPage);
         }
-        //GetListFavoritePages - НЕ РАБОТАЕТ(нужно переделать)
+
         public async Task<IEnumerable<Page>> GetListFavoritePages(string userId)
         {
-            var d = context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ThenInclude(l => l.Deleted == false).Select(p => p.Pages);
-            //var l = d.Select(p=>p.Pages)
-            return (IEnumerable<Page>)d;
+            List<Models.WorkSpace> workSpaceUser = context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ToList();
+            List<Page> listPage = new List<Page>();
+            for (int i = 0; i < workSpaceUser.Count(); i++)
+            {
+                for (int j = 0; j < workSpaceUser[i].Pages.Count(); j++)
+                {
+                    if (workSpaceUser[i].Pages[j].Favourite == true)
+                        listPage.Add(workSpaceUser[i].Pages[j]);
+                }
+            }
+
+            return (listPage);
         }
         public async Task<IEnumerable<Page>> GetListPagesNotDeleted(int workSpaceId)
         {
             return await context.Pages.Where(x => x.WorkSpaceId == workSpaceId && x.Deleted == false).ToListAsync();
 
         }
-
     }
 }

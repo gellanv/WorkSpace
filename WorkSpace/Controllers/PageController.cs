@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WorkSpace.DTO;
@@ -108,7 +109,8 @@ namespace WorkSpace.Controllers
         /// <summary>
         /// Make dublicate of page by Id (ПОКА НЕ РАБОТАЕТ, ИСПОЛЬЗУЕТ КОНТРОЛЛЕРЫ, КОТОРЫЕ ЕЩЕ НЕ РЕАЛИЗОВАНЫ)
         /// </summary>
-        /// <response code="200">Success</response>       
+        /// <response code="200">Success</response>
+        // POST: api/page/duplicate/5
         [HttpPost("duplicate/{id}")]
         public async Task<IActionResult> DuplicatePage(int id)
         {           
@@ -118,24 +120,32 @@ namespace WorkSpace.Controllers
             return Ok(createPageResponse);
         }
 
+        /// <summary>
+        /// Get deleted pages from trash
+        /// </summary>
+        /// <response code="200">Success</response>
+        //GET: api/page/trash
+        [HttpGet("trash")]
+        public async Task<IActionResult> GetListDeletedPages()
+        {
+            IEnumerable<PageDTO> pageDtos = await pageService.GetListDeletedPages(UserId);
+            IEnumerable<GetListPagesResponse> getListPagesResponse = mapper.Map<IEnumerable<GetListPagesResponse>>(pageDtos);
 
-        //// GET: api/workspaces/trash
-        //[HttpGet("trash")]
-        //public async Task<IActionResult> GetListDeletedPages()
-        //{
-        //    IEnumerable<WorkSpaceDTO> listDeletedPages = await workSpaceService.GetListDeletedPages(UserId);
-        //    IEnumerable<GetWorkSpaceByIdResponse> ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listDeletedPages);
+            return Ok(getListPagesResponse);
+        }
 
-        //    return Ok(ListPagesResponse);
-        //}
-        //// GET: api/workspaces/favorite
-        //[HttpGet("favorite")]
-        //public async Task<IActionResult> GetListFavoritePages()
-        //{
-        //    var listDeletedPages = await workSpaceService.GetListFavoritePages(UserId);
-        //    var ListPagesResponse = mapper.Map<IEnumerable<GetWorkSpaceByIdResponse>>(listDeletedPages);
+        /// <summary>
+        /// Get favorite pages
+        /// </summary>
+        /// <response code="200">Success</response>
+        //// GET: api/page/favorite
+        [HttpGet("favorite")]
+        public async Task<IActionResult> GetListFavoritePages()
+        {
+            IEnumerable<PageDTO> pageDtos = await pageService.GetListFavoritePages(UserId);
+            IEnumerable<GetListPagesResponse> getListPagesResponse = mapper.Map<IEnumerable<GetListPagesResponse>>(pageDtos);
 
-        //    return Ok(ListPagesResponse);
-        //}
+            return Ok(getListPagesResponse);
+        }
     }
 }

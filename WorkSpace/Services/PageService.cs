@@ -182,19 +182,19 @@ namespace WorkSpace.Services
             }
         }
 
-        public async Task<IEnumerable<WorkSpaceDTO>> GetListDeletedPages(string userId)
+        public async Task<IEnumerable<PageDTO>> GetListDeletedPages(string userId)
         {
-            var workSpaces = await unitOfWork.RepositoryPage.GetListPagesDeleted(userId);
-            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
-
-            return workSpacesDTO;
+            IEnumerable<Page> pages = await unitOfWork.RepositoryPage.GetListPagesDeleted(userId);
+            IEnumerable<PageDTO> pageDtos = mapper.Map<IEnumerable<PageDTO>>(pages);
+            return pageDtos;
         }
-        public async Task<IEnumerable<WorkSpaceDTO>> GetListFavoritePages(string userId)
+
+        public async Task<IEnumerable<PageDTO>> GetListFavoritePages(string userId)
         {
-            var workSpaces = await unitOfWork.RepositoryPage.GetListPagesDeleted(userId);
-            var workSpacesDTO = mapper.Map<IEnumerable<WorkSpaceDTO>>(workSpaces);
-
-            return workSpacesDTO;
+            IEnumerable<Page> pages = await unitOfWork.RepositoryPage.GetListFavoritePages(userId);
+            IEnumerable<PageDTO> pageDtos = mapper.Map<IEnumerable<PageDTO>>(pages);
+            return pageDtos;
         }
+       
     }
 }
