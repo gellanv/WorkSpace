@@ -89,7 +89,7 @@ namespace WorkSpace.Repositories
 
         public async Task<IEnumerable<Page>> GetListPagesDeleted(string userId)
         {
-            List<Models.WorkSpace> workSpaceUser = context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ToList();
+            List<Models.WorkSpace> workSpaceUser = await context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ToListAsync();
             List<Page> listPage = new List<Page>();
             for (int i = 0; i < workSpaceUser.Count(); i++)
             {
@@ -105,7 +105,7 @@ namespace WorkSpace.Repositories
 
         public async Task<IEnumerable<Page>> GetListFavoritePages(string userId)
         {
-            List<Models.WorkSpace> workSpaceUser = context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ToList();
+            List<Models.WorkSpace> workSpaceUser = await context.WorkSpaces.Where(x => x.UserId == userId).Include(p => p.Pages).ToListAsync();
             List<Page> listPage = new List<Page>();
             for (int i = 0; i < workSpaceUser.Count(); i++)
             {
