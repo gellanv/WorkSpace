@@ -68,9 +68,7 @@ namespace WorkSpace.Repositories
         }
         public async Task<Page> Create(Page page)
         {
-            //Page newPage=null;
              await context.Pages.AddAsync(page);
-            //newPage.Id = page.Id;
              return page;
         }
 

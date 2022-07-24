@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WorkSpace.Models;
 
 namespace WorkSpace.DTO
 {
@@ -25,9 +22,9 @@ namespace WorkSpace.DTO
                 public int Id { get; set; }
                 public string ContentHtml { get; set; }
             }
-        }
+        }        
     }
-    
+
     //public class BlocksElementsDTO
     //{
     //    public int Id { get; set; }

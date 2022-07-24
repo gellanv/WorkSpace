@@ -22,7 +22,7 @@ namespace WorkSpace.Services
         {
             this.unitOfWork = _unitOfWork;
             this.mapper = _mapper;
-            validation = _validation;
+            this.validation = _validation;
         }
 
         public async Task<IEnumerable<WorkSpaceDTO>> GetAllWorkSpace(string userId)

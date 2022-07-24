@@ -38,7 +38,8 @@ namespace WorkSpace.Mappings
 
             CreateMap<Element, ElementDTO>().ReverseMap();
             CreateMap<Page, PageDTO>().ReverseMap();
-            CreateMap<Page, Page>().ReverseMap();
+            CreateMap<Block, PageDTO.BlockDTO>().ReverseMap();
+            CreateMap<Element, PageDTO.BlockDTO.ElementDTO>().ReverseMap();
 
             CreateMap<PageDTO, GetPageByIdResponse>().ReverseMap();
 

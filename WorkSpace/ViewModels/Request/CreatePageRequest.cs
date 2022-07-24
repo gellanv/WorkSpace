@@ -10,6 +10,7 @@ namespace WorkSpace.ViewModels.Request
     {
         [Required]
         public string Name { get; set; }
+        [Required]
         public int WorkSpaceID { get; set; }
     }
 }

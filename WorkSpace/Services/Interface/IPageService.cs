@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using WorkSpace.DTO;
 
 namespace WorkSpace.Services.Interface
 {
     public interface IPageService
     {
-        Task<PageDTO> GetPageById(int pageId);
-        Task DeletePageById(int pageId);
-        Task<ChangePageNameDTO> ChangePageNameById(ChangePageNameDTO changePageNameDTO);
-        Task<PageDTO> CreatePage(PageDTO pageDTO);
-        Task<PageDTO> DuplicatePage(int pageId);
-
-        Task<PageDTO> AddRemoveFavouritesById(PageDTO addRemoveToFavouritesByIdDTO);
-        Task<PageDTO> PushPullPageToTrashById(PageDTO trashPageDTO);
+        Task<PageDTO> GetPageById(string UserId, int pageId);
+        Task DeletePageById(string UserId, int pageId);
+        Task<ChangePageNameDTO> ChangePageNameById(string UserId, ChangePageNameDTO changePageNameDTO);
+        Task<PageDTO> CreatePage(string UserId, PageDTO pageDTO);
+        Task<PageDTO> DuplicatePage(string UserId, int pageId);
+        Task AddRemoveFavouritesById(string UserId, int id);
+        Task PushPullPageToTrashById(string UserId, int id);
         Task<IEnumerable<WorkSpaceDTO>> GetListDeletedPages(string userId);
         Task<IEnumerable<WorkSpaceDTO>> GetListFavoritePages(string userId);
 
