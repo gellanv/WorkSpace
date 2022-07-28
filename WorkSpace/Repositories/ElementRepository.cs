@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WorkSpace.Models;
 using WorkSpace.Repositories.Interface;
 
@@ -17,31 +15,26 @@ namespace WorkSpace.Repositories
             this.context = _context;
         }
 
-        public IEnumerable<Element> GetList()
+        public async Task<Element> Create(Element element)
         {
-            return context.Elements.ToList();
-        }
-        public Element Get(int id)
-        {
-            return context.Elements.Where(x => x.Id == id).FirstOrDefault();
+            await context.Elements.AddAsync(element);
+
+            return element;
         }
 
-        public void Create(Element element)
+        public async Task<Element> GetElementById(int elementId)
         {
-            context.Elements.Add(element);
+            return await context.Elements.Where(x => x.Id == elementId).FirstOrDefaultAsync();
         }
+
         public void Update(Element element)
         {
             context.Entry(element).State = EntityState.Modified;
         }
-        public void Delete(int id)
-        {
-            Element element = context.Elements.Find(id);
-            if (element != null)
-                context.Elements.Remove(element);
-        }
-        
 
-        
+        public void Delete(Element element)
+        {
+            context.Elements.Remove(element);
+        }
     }
 }
