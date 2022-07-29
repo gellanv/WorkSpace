@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkSpace.DTO;
 using WorkSpace.Services.Interface;
@@ -35,6 +38,34 @@ namespace WorkSpace.Controllers
 
             return Ok(createElementResponse);
         }
+
+        /// <summary>
+        /// Create new Element
+        /// </summary>
+        /// <response code="200">Success</response>
+        // POST: api/elements/media     
+        [HttpPost("media")]
+        public async Task<IActionResult> UnloadMedia(IFormFile file)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files");
+
+            //create folder if not exist
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            Guid nameFile = Guid.NewGuid();
+            FileInfo fileInfo = new FileInfo(file.FileName);
+            string fileName = nameFile + fileInfo.Extension;
+            string fileNameWithPath = Path.Combine(path, fileName);
+
+
+            using (var stream = System.IO.File.Create(fileNameWithPath))
+            {
+                await file.CopyToAsync(stream);
+            }
+            return Ok(fileNameWithPath);
+        }
+
 
         /// <summary>
         /// Change Element by Id
