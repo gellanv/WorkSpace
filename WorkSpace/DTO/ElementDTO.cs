@@ -14,5 +14,6 @@ namespace WorkSpace.DTO
         public string ContentHtml { get; set; }
         [Required]
         public int BlockId { get; set; }
+        public int Position { get; set; }
     }
 }

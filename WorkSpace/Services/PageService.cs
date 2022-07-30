@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using WorkSpace.Behaviors.Interface;
@@ -46,7 +45,7 @@ namespace WorkSpace.Services
                     for (int j = 0; j < page.Blocks[i].Elements.Count; j++)
                     {
                         Element newElement = new Element { BlockId = newBlock.Id, ContentHtml = page.Blocks[i].Elements[j].ContentHtml };
-                        //newElement = unitOfWork.RepositorElement.Create(newElement).Result;
+                        await unitOfWork.RepositoryElement.Create(newElement);
                         await unitOfWork.SaveAsync();
                     }
                 }
@@ -56,7 +55,7 @@ namespace WorkSpace.Services
             else
             {
                 throw new Exception("No access");
-            }            
+            }
         }
 
         public async Task DeletePageById(string UserId, int pageId)
@@ -195,6 +194,6 @@ namespace WorkSpace.Services
             IEnumerable<PageDTO> pageDtos = mapper.Map<IEnumerable<PageDTO>>(pages);
             return pageDtos;
         }
-       
+
     }
 }

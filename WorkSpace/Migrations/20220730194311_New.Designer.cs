@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WorkSpace.Migrations
 {
     [DbContext(typeof(WorkSpaceContext))]
-    [Migration("20220720174603_New")]
+    [Migration("20220730194311_New")]
     partial class New
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -189,6 +189,9 @@ namespace WorkSpace.Migrations
 
                     b.Property<string>("ContentHtml")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

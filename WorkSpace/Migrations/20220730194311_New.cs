@@ -229,7 +229,8 @@ namespace WorkSpace.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ContentHtml = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BlockId = table.Column<int>(type: "int", nullable: false)
+                    BlockId = table.Column<int>(type: "int", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

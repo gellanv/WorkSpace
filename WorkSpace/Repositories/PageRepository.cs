@@ -43,7 +43,8 @@ namespace WorkSpace.Repositories
                                                                            .Select(elem => new BlockDTO.ElementDTO
                                                                            {
                                                                                Id = elem.Id,
-                                                                               ContentHtml = elem.ContentHtml
+                                                                               ContentHtml = elem.ContentHtml,
+                                                                               Position = elem.Position
                                                                            }),
                                                 })
                                        })

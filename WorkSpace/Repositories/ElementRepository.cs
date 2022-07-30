@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkSpace.Models;
@@ -17,6 +18,8 @@ namespace WorkSpace.Repositories
 
         public async Task<Element> Create(Element element)
         {
+            int count = context.Elements.Where(x => x.BlockId == element.BlockId).Count();
+            element.Position = ++count;
             await context.Elements.AddAsync(element);
 
             return element;
@@ -34,6 +37,18 @@ namespace WorkSpace.Repositories
 
         public void Delete(Element element)
         {
+            int elementPosition = element.Position;
+            List<Element> elementsBlock = context.Elements.Where(x => x.BlockId == element.BlockId).ToList();
+
+            if (elementsBlock.Count() > elementPosition)
+            {
+                for(int i= elementPosition+1;i<= elementsBlock.Count(); i++)
+                {
+                    Element elementTemp = context.Elements.Where(x => x.Position == i).FirstOrDefault();
+                    elementTemp.Position--;
+                    context.Elements.Update(elementTemp);
+                }
+            }
             context.Elements.Remove(element);
         }
     }

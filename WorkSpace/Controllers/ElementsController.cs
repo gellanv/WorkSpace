@@ -40,7 +40,7 @@ namespace WorkSpace.Controllers
         }
 
         /// <summary>
-        /// Create new Element
+        /// Upload Media
         /// </summary>
         /// <response code="200">Success</response>
         // POST: api/elements/media     
@@ -93,6 +93,18 @@ namespace WorkSpace.Controllers
         {
             await elementService.DeleteElement(id);
 
+            return Ok();
+        }
+
+        /// <summary>
+        /// Change position for element ЕЩЕ НЕ РЕАЛИЗОВАНО
+        /// </summary>
+        /// <response code="200">Success</response>
+        // POST: api/elements/position     
+        [HttpPut]
+        public async Task<IActionResult> ChangePositionElement(int idElement, int newPosition)
+        {
+            
             return Ok();
         }
     }
