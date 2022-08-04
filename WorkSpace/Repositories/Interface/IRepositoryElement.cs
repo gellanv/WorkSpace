@@ -8,10 +8,12 @@ namespace WorkSpace.Repositories.Interface
 {
     public interface IRepositoryElement
     {
-        IEnumerable<Element> GetList();
-        Element Get(int id);
-        void Create(Element element);
+        public Task<Element> Create(Element element);
+
+        public Task<Element> GetElementById(int elementId);
+
         void Update(Element element);
-        void Delete(int id);
+
+        void Delete(Element element);
     }
 }

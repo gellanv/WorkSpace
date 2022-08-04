@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using WorkSpace.Repositories.Interface;
 
 namespace WorkSpace.Repositories
@@ -65,7 +61,7 @@ namespace WorkSpace.Repositories
 
         public Task SaveAsync()
         {
-          return  context.SaveChangesAsync();
+            return context.SaveChangesAsync();
         }
     }
 }

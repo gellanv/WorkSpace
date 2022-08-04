@@ -21,6 +21,7 @@ namespace WorkSpace.DTO
             {
                 public int Id { get; set; }
                 public string ContentHtml { get; set; }
+                public int Position { get; set; }
             }
         }        
     }

@@ -232,6 +232,9 @@ namespace WorkSpace.Migrations
                     b.Property<string>("ContentHtml")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BlockId");

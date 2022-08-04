@@ -23,7 +23,7 @@ namespace WorkSpace.Repositories
         }
         public async Task<Models.WorkSpace> GetWorkSpaceById(int workSpaceId)
         {
-            return await context.WorkSpaces.Where(x => x.Id == workSpaceId).FirstOrDefaultAsync(); ;
+            return await context.WorkSpaces.Where(x => x.Id == workSpaceId).FirstOrDefaultAsync();
         }
         public IEnumerable<Models.WorkSpace> GetList()
         {
