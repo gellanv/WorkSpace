@@ -20,4 +20,5 @@ using WorkSpace.Models;
         public DbSet<Block> Blocks { get; set; }
 
         public DbSet<Element> Elements { get; set; }
+        public DbSet<Template> Templates { get; set; }
 }

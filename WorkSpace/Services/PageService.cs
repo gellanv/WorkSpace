@@ -40,7 +40,13 @@ namespace WorkSpace.Services
 
                 for (int i = 0; i < page.Blocks.Count; i++)
                 {
-                    Block newBlock = new Block() { PageId = newPage.Id, Coordinates = page.Blocks[i].Coordinates, Style = page.Blocks[i].Style, Title = page.Blocks[i].Title };
+                    Block newBlock = new Block() { PageId = newPage.Id,
+                                                   X = page.Blocks[i].X,
+                                                   Y = page.Blocks[i].Y,
+                                                   Height = page.Blocks[i].Height,
+                                                   Width = page.Blocks[i].Width,
+                                                   Style = page.Blocks[i].Style, 
+                                                   Title = page.Blocks[i].Title };
                     //newBlock = unitOfWork.RepositorBlock.Create(newBlock).Result;
                     await unitOfWork.SaveAsync();
                     for (int j = 0; j < page.Blocks[i].Elements.Count; j++)
@@ -181,7 +187,6 @@ namespace WorkSpace.Services
                 throw new Exception("No access");
             }
         }
-
         public async Task<IEnumerable<PageDTO>> GetListDeletedPages(string userId)
         {
             IEnumerable<Page> pages = await unitOfWork.RepositoryPage.GetListPagesDeleted(userId);

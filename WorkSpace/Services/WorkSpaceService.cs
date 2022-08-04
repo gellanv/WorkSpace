@@ -44,10 +44,12 @@ namespace WorkSpace.Services
             {
                 IEnumerable<Page> listPages = await unitOfWork.RepositoryPage.GetListPagesNotDeleted(workSpaceId);
 
-                WorkSpaceWithListPagesDTO workSpaceWithListPagesDTO = new WorkSpaceWithListPagesDTO();
-                workSpaceWithListPagesDTO.Id = workSpaceId;
-                workSpaceWithListPagesDTO.Name = workSpace.Name;
-                workSpaceWithListPagesDTO.Pages = mapper.Map<IEnumerable<WorkSpaceWithListPagesDTO.PagesDTO>>(listPages);
+                WorkSpaceWithListPagesDTO workSpaceWithListPagesDTO = new()
+                {
+                    Id = workSpaceId,
+                    Name = workSpace.Name,
+                    Pages = mapper.Map<IEnumerable<WorkSpaceWithListPagesDTO.PagesDTO>>(listPages)
+                };
 
                 return workSpaceWithListPagesDTO;
             }

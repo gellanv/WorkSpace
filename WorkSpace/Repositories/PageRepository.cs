@@ -35,12 +35,12 @@ namespace WorkSpace.Repositories
                                            Name = page.Name,
                                            WorkSpaceId = page.WorkSpaceId,
                                            ListBlocks = page.Blocks
-                                                .Select(block => new BlockDTO
+                                                .Select(block => new PageDTO.BlockDTO
                                                 {
                                                     Id = block.Id,
                                                     Title = block.Title,
                                                     ListElements = block.Elements
-                                                                           .Select(elem => new BlockDTO.ElementDTO
+                                                                           .Select(elem => new PageDTO.BlockDTO.ElementDTO
                                                                            {
                                                                                Id = elem.Id,
                                                                                ContentHtml = elem.ContentHtml
@@ -65,26 +65,6 @@ namespace WorkSpace.Repositories
         public void Delete(Page page)
         {
             context.Pages.Remove(page);
-        }
-
-        private bool disposed = false;
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public async Task<IEnumerable<Page>> GetListPagesDeleted(string userId)

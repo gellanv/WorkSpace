@@ -10,8 +10,10 @@ namespace WorkSpace.Repositories.Interface
     {
         IEnumerable<Block> GetList(); // получение всех объектов
         Block Get(int id); // получение одного объекта по id
-        void Create(Block block); // создание объекта
+        Task<Block> Create(Block block); // создание объекта
         void Update(Block block); // обновление объекта
-        void Delete(int id); // удаление объекта по id
+        void Delete(Block block); // удаление объекта по id
+        Task<Template> GetTemplateById(int id);
+        Task<Block> GetBlockById(int id);
     }
 }

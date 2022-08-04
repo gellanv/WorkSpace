@@ -156,8 +156,8 @@ namespace WorkSpace.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Coordinates")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
 
                     b.Property<int>("PageId")
                         .HasColumnType("int");
@@ -168,11 +168,55 @@ namespace WorkSpace.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
+                    b.Property<int>("X")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Y")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PageId");
 
                     b.ToTable("Blocks");
+                });
+
+            modelBuilder.Entity("WorkSpace.Models.BlockTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Style")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
+                    b.Property<int>("X")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Y")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TemplateId");
+
+                    b.ToTable("BlockTemplate");
                 });
 
             modelBuilder.Entity("WorkSpace.Models.Element", b =>
@@ -228,6 +272,21 @@ namespace WorkSpace.Migrations
                     b.HasIndex("WorkSpaceId");
 
                     b.ToTable("Pages");
+                });
+
+            modelBuilder.Entity("WorkSpace.Models.Template", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Templates");
                 });
 
             modelBuilder.Entity("WorkSpace.Models.User", b =>
@@ -386,6 +445,15 @@ namespace WorkSpace.Migrations
                     b.Navigation("Page");
                 });
 
+            modelBuilder.Entity("WorkSpace.Models.BlockTemplate", b =>
+                {
+                    b.HasOne("WorkSpace.Models.Template", null)
+                        .WithMany("BlockTemplates")
+                        .HasForeignKey("TemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("WorkSpace.Models.Element", b =>
                 {
                     b.HasOne("WorkSpace.Models.Block", "Block")
@@ -425,6 +493,11 @@ namespace WorkSpace.Migrations
             modelBuilder.Entity("WorkSpace.Models.Page", b =>
                 {
                     b.Navigation("Blocks");
+                });
+
+            modelBuilder.Entity("WorkSpace.Models.Template", b =>
+                {
+                    b.Navigation("BlockTemplates");
                 });
 
             modelBuilder.Entity("WorkSpace.Models.User", b =>

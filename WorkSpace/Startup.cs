@@ -85,6 +85,7 @@ namespace WorkSpace
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IWorkSpaceService, WorkSpaceService>();
             services.AddScoped<IPageService, PageService>();
+            services.AddScoped<IBlockService, BlockService>();
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

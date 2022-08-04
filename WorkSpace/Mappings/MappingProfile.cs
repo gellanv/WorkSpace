@@ -34,7 +34,7 @@ namespace WorkSpace.Mappings
             CreateMap<ChangeWorkSpaceNameRequest, WorkSpaceDTO>().ReverseMap();
             CreateMap<ChangeNameWorkSpaceResponse, WorkSpaceDTO>().ReverseMap();
 
-            CreateMap<Block, BlockDTO>().ReverseMap();
+            CreateMap<Block, PageDTO.BlockDTO>().ReverseMap();
 
             CreateMap<Element, ElementDTO>().ReverseMap();
             CreateMap<Page, PageDTO>().ReverseMap();
@@ -58,6 +58,19 @@ namespace WorkSpace.Mappings
             CreateMap<CreatePageResponse.BlockResponse, PageDTO.BlockDTO>().ReverseMap();
             CreateMap<CreatePageResponse.BlockResponse.ElementResponse, PageDTO.BlockDTO.ElementDTO>().ReverseMap();
 
+            CreateMap<Page, PageTemplateDTO>().ReverseMap();
+            CreateMap<Block, PageTemplateDTO.BlockTemplateDTO>().ReverseMap();
+            CreateMap<Element, PageTemplateDTO.BlockTemplateDTO.ElementTemplateDTO>().ReverseMap();
+
+            CreateMap<AddListBlocksTemplateResponse, PageTemplateDTO>().ReverseMap();
+            CreateMap<AddListBlocksTemplateResponse.BlockTemplateResponse, PageTemplateDTO.BlockTemplateDTO>().ReverseMap();
+            CreateMap<AddListBlocksTemplateResponse.BlockTemplateResponse.ElementTemplateResponse, PageTemplateDTO.BlockTemplateDTO.ElementTemplateDTO>().ReverseMap();
+
+            CreateMap<CreateBlockRequest, DTO.BlockDTO>().ReverseMap();
+            CreateMap<Block, DTO.BlockDTO>().ReverseMap();
+
+            CreateMap<UpdateBlockRequest, UpdateBlockDTO>().ReverseMap();
+            CreateMap<Block, UpdateBlockDTO>().ReverseMap();
 
         }
     } 

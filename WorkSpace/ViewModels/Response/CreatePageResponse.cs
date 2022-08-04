@@ -5,11 +5,6 @@ using System.Threading.Tasks;
 
 namespace WorkSpace.ViewModels.Response
 {
-    //public class CreatePageResponse
-    //{
-    //    public int Id { get; set; }
-    //    public string Name { get; set; }
-    //}
     public class CreatePageResponse
     {
         public int Id { get; set; }
@@ -20,6 +15,7 @@ namespace WorkSpace.ViewModels.Response
         {
             public int Id { get; set; }
             public string Title { get; set; }
+
             public IEnumerable<ElementResponse> ListElements { get; set; }
 
             public class ElementResponse
