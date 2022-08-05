@@ -62,11 +62,12 @@ namespace WorkSpace.Mappings
             CreateMap<CreateElementResponse, DTO.ElementDTO>().ReverseMap();
             CreateMap<ChangeElementRequest, DTO.ElementDTO>().ReverseMap();
             CreateMap<ChangeElementResponse, DTO.ElementDTO>().ReverseMap();
+            CreateMap<GetElementsResponse, DTO.ElementDTO>().ReverseMap();
             CreateMap<DTO.ElementDTO, Element>().ReverseMap();
             CreateMap<Page, PageTemplateDTO>().ReverseMap();
             CreateMap<Block, PageTemplateDTO.BlockTemplateDTO>().ReverseMap();
             CreateMap<Element, PageTemplateDTO.BlockTemplateDTO.ElementTemplateDTO>().ReverseMap();
-
+      
             CreateMap<AddListBlocksTemplateResponse, PageTemplateDTO>().ReverseMap();
             CreateMap<AddListBlocksTemplateResponse.BlockTemplateResponse, PageTemplateDTO.BlockTemplateDTO>().ReverseMap();
             CreateMap<AddListBlocksTemplateResponse.BlockTemplateResponse.ElementTemplateResponse, PageTemplateDTO.BlockTemplateDTO.ElementTemplateDTO>().ReverseMap();

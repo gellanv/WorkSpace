@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using WorkSpace.Behaviors.Interface;
 using WorkSpace.Models;
 using WorkSpace.Repositories.Interface;
 
@@ -10,10 +11,11 @@ namespace WorkSpace.Repositories
     public class ElementRepository : IRepositoryElement
     {
         private readonly WorkSpaceContext context;
-
-        public ElementRepository(WorkSpaceContext _context)
+        readonly IValidation validation;
+        public ElementRepository(WorkSpaceContext _context, IValidation validation)
         {
             this.context = _context;
+            this.validation = validation;
         }
 
         public async Task<Element> Create(Element element)
@@ -50,6 +52,27 @@ namespace WorkSpace.Repositories
                 }
             }
             context.Elements.Remove(element);
+        }
+        public async Task<List<Element>> GetElementByBlockId(int blockId)
+        {
+            return await context.Elements.Where(x => x.BlockId == blockId).OrderBy(x=>x.Position).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Element>> ChangeElementPosition(int idElement, int newPosition)
+        {
+            Element elemment = GetElementById(idElement).Result;
+            validation.CheckObjectForNull(elemment);
+            List<Element> elements = await GetElementByBlockId(elemment.BlockId);
+            elements.Remove(elemment);
+            elements.Insert(newPosition-1, elemment);
+
+            for (int i=0; i<elements.Count; i++)
+            {
+                elements[i].Position = i + 1;
+                context.Elements.Update(elements[i]);
+            }
+            
+            return elements;
         }
     }
 }
