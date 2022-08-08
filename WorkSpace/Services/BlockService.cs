@@ -143,5 +143,81 @@ namespace WorkSpace.Services
                 throw new Exception("No access");
             }
         }
+
+        public async Task<ChangeBlockTitleDTO> ChangeBlockTitleById(ChangeBlockTitleDTO changeBlockTitleDTO)
+        {
+            validation.CheckId(changeBlockTitleDTO.Id);
+            validation.CheckObjectForValid(changeBlockTitleDTO);
+
+            Block block = await unitOfWork.RepositoryBlock.GetBlockById(changeBlockTitleDTO.Id);
+            validation.CheckObjectForNull(block);
+
+            validation.CheckId(block.PageId);
+            Page page = await unitOfWork.RepositoryPage.GetPageById(block.PageId);
+            validation.CheckObjectForNull(page);
+
+            validation.CheckId(page.WorkSpaceId);
+            Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(page.WorkSpaceId);
+            validation.CheckObjectForNull(workSpace);
+            if (workSpace.UserId == changeBlockTitleDTO.UserId)
+            {
+                block.Title = changeBlockTitleDTO.Title;
+                unitOfWork.RepositoryBlock.Update(block);
+                await unitOfWork.SaveAsync();
+
+                ChangeBlockTitleDTO changeBlockTitle = mapper.Map<ChangeBlockTitleDTO>(block);
+                return changeBlockTitle;
+            }
+            else
+            {
+                throw new Exception("No access");
+            }
+        }
+
+        public async Task<BlockDuplicateDTO> DuplicateBlock(string UserId, int id)
+        {
+            validation.CheckId(id);
+
+            Block block = await unitOfWork.RepositoryBlock.GetBlockById(id);
+            validation.CheckObjectForNull(block);
+
+            validation.CheckId(block.PageId);
+            Page page = await unitOfWork.RepositoryPage.GetPageById(block.PageId);
+            validation.CheckObjectForNull(page);
+
+            validation.CheckId(page.WorkSpaceId);
+            Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(page.WorkSpaceId);
+            validation.CheckObjectForNull(workSpace);
+
+            if (workSpace != null && workSpace.UserId == UserId)
+            {
+                Block newBlock = new Block()
+                {
+                    Title = block.Title,
+                    Style = block.Style,
+                    X = block.X,
+                    Y = block.Y,
+                    Height = block.Height,
+                    Width = block.Width,
+                    PageId = block.PageId
+                };
+                newBlock = await unitOfWork.RepositoryBlock.Create(newBlock);
+                await unitOfWork.SaveAsync();
+
+                for (int i = 0; i < block.Elements.Count; i++)
+                {
+                    Element newElement = new Element { BlockId = newBlock.Id, ContentHtml = block.Elements[i].ContentHtml,Position = block.Elements[i].Position };
+                    await unitOfWork.RepositoryElement.Create(newElement);
+                    await unitOfWork.SaveAsync();
+                }
+                BlockDuplicateDTO blockDuplicateDTO = mapper.Map<BlockDuplicateDTO>(newBlock);
+
+                return blockDuplicateDTO;
+            }
+            else
+            {
+                throw new Exception("No access");
+            }
+        }
     }
 }

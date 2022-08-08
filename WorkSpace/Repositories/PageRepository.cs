@@ -39,6 +39,11 @@ namespace WorkSpace.Repositories
                                                 {
                                                     Id = block.Id,
                                                     Title = block.Title,
+                                                    Style = block.Style,
+                                                    X = block.X,
+                                                    Y = block.Y,
+                                                    Width = block.Width,
+                                                    Height = block.Height,
                                                     ListElements = block.Elements
                                                                            .Select(elem => new PageDTO.BlockDTO.ElementDTO
                                                                            {

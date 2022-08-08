@@ -13,6 +13,8 @@ namespace WorkSpace.Services.Interface
 
         Task<BlockDTO> CreateBlock(string UserId, BlockDTO blockDTO);
         Task<UpdateBlockDTO> UpdateBlockById(UpdateBlockDTO updateBlockDTO);
+        Task<ChangeBlockTitleDTO> ChangeBlockTitleById(ChangeBlockTitleDTO changeBlockTitleDTO);
+        Task<BlockDuplicateDTO> DuplicateBlock(string UserId,int id);
 
     }
 }

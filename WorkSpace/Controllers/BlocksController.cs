@@ -84,88 +84,35 @@ namespace WorkSpace.Controllers
             return Ok();
         }
 
-        //// GET: api/Blocks
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Block>>> GetBlock()
-        //{
-        //    return await _context.Blocks.ToListAsync();
-        //}
+        /// <summary>
+        /// change Block Title by id
+        /// </summary>
+        /// <response code="200">Success</response>       
+        // PUT: api/changeBlockTitle/5
+        [HttpPut("changeBlockTitle/{id}")]
+        public async Task<ActionResult> ChangeBlockTitleById(int id, ChangeBlockTitleRequest changeBlockTitleRequest)
+        {
+            ChangeBlockTitleDTO changeBlockTitleDTO = mapper.Map<ChangeBlockTitleDTO>(changeBlockTitleRequest);
+            changeBlockTitleDTO.Id = id;
+            changeBlockTitleDTO.UserId = UserId;
+            _ = await blockService.ChangeBlockTitleById(changeBlockTitleDTO);
 
-        //// GET: api/Blocks/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Block>> GetBlock(int id)
-        //{
-        //    var block = await _context.Blocks.FindAsync(id);
+            return Ok();
+        }
 
-        //    if (block == null)
-        //    {
-        //        return NotFound();
-        //    }
+        /// <summary>
+        /// Make dublicate of block by Id 
+        /// </summary>
+        /// <response code="200">Success</response>
+        // POST: api/block/duplicate/5
+        [HttpPost("duplicate/{id}")]
+        public async Task<IActionResult> DuplicateBlock(int id)
+        {
+            BlockDuplicateDTO blockDuplicateDTO = await blockService.DuplicateBlock(UserId, id);
 
-        //    return block;
-        //}
+            //Что возвращать ОК или Page? 
+            return Ok();
+        }
 
-        //// PUT: api/Blocks/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutBlock(int id, Block block)
-        //{
-        //    if (id != block.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(block).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!BlockExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        //// POST: api/Blocks
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Block>> PostBlock(Block block)
-        //{
-        //    _context.Blocks.Add(block);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetBlock", new { id = block.Id }, block);
-        //}
-
-        //// DELETE: api/Blocks/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteBlock(int id)
-        //{
-        //    var block = await _context.Blocks.FindAsync(id);
-        //    if (block == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Blocks.Remove(block);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-        //private bool BlockExists(int id)
-        //{
-        //    return _context.Blocks.Any(e => e.Id == id);
-        //}
     }
 }

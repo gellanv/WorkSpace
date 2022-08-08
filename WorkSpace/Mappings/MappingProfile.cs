@@ -77,6 +77,11 @@ namespace WorkSpace.Mappings
             CreateMap<UpdateBlockRequest, UpdateBlockDTO>().ReverseMap();
             CreateMap<Block, UpdateBlockDTO>().ReverseMap();
 
+            CreateMap<ChangeBlockTitleRequest, ChangeBlockTitleDTO>().ReverseMap();
+            CreateMap<Block, ChangeBlockTitleDTO>().ReverseMap();
+
+            CreateMap<Block, BlockDuplicateDTO>().ReverseMap();
+
         }
     } 
 }
