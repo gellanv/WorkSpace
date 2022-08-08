@@ -77,11 +77,26 @@ namespace WorkSpace.Mappings
 
             CreateMap<UpdateBlockRequest, UpdateBlockDTO>().ReverseMap();
             CreateMap<Block, UpdateBlockDTO>().ReverseMap();
+            CreateMap<Element, UpdateBlockDTO.UpdateBlockElementDTO>().ReverseMap();
+            CreateMap<UpdateBlockResponse, UpdateBlockDTO>().ReverseMap();
+            CreateMap<UpdateBlockResponse.UpdateBlockElementResponse, UpdateBlockDTO.UpdateBlockElementDTO>().ReverseMap();
 
             CreateMap<ChangeBlockTitleRequest, ChangeBlockTitleDTO>().ReverseMap();
             CreateMap<Block, ChangeBlockTitleDTO>().ReverseMap();
+            CreateMap<Element, ChangeBlockTitleDTO.ChangeBlockTitleElementDTO>().ReverseMap();
+            CreateMap<ChangeBlockTitleResponse, ChangeBlockTitleDTO>().ReverseMap();
+            CreateMap<ChangeBlockTitleResponse.ChangeBlockTitleElementResponse, ChangeBlockTitleDTO.ChangeBlockTitleElementDTO>().ReverseMap();
+
 
             CreateMap<Block, BlockDuplicateDTO>().ReverseMap();
+            CreateMap<Element, BlockDuplicateDTO.ElementDuplicateDTO>().ReverseMap();
+            CreateMap<BlockDuplicateResponse, BlockDuplicateDTO>().ReverseMap();
+            CreateMap<BlockDuplicateResponse.ElementDuplicateResponse, BlockDuplicateDTO.ElementDuplicateDTO>().ReverseMap();
+
+            CreateMap<DTO.BlockDTO, CreateBlockResponse>().ReverseMap();
+
+            CreateMap<Element, UpdateBlockDTO.UpdateBlockElementDTO>().ReverseMap();
+            CreateMap<DTO.BlockDTO, CreateBlockResponse>().ReverseMap();
 
         }
     } 

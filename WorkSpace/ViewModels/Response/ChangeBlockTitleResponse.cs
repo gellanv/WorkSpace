@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WorkSpace.DTO
+namespace WorkSpace.ViewModels.Response
 {
-    public class BlockDuplicateDTO
+    public class ChangeBlockTitleResponse
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Style { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
-        public IEnumerable<ElementDuplicateDTO> Elements { get; set; }
-        public class ElementDuplicateDTO
+        public string Title { get; set; }
+        public string Style { get; set; }
+        public IEnumerable<ChangeBlockTitleElementResponse> Elements { get; set; }
+        public class ChangeBlockTitleElementResponse
         {
             public int Id { get; set; }
             public string ContentHtml { get; set; }

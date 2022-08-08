@@ -8,11 +8,20 @@ namespace WorkSpace.DTO
 {
     public class ChangeBlockTitleDTO
     {
-        [Required]
         public int Id { get; set; }
-        [Required]
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
         public string Title { get; set; }
-
+        public string Style { get; set; }
         public string UserId { get; set; }
+        public IEnumerable<ChangeBlockTitleElementDTO> Elements { get; set; }
+        public class ChangeBlockTitleElementDTO
+        {
+            public int Id { get; set; }
+            public string ContentHtml { get; set; }
+            public int Position { get; set; }
+        }
     }
 }

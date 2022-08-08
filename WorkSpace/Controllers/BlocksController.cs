@@ -63,9 +63,9 @@ namespace WorkSpace.Controllers
         {
             BlockDTO blockDTO = mapper.Map<BlockDTO>(createBlockRequest);
             BlockDTO newBlockDTO = await blockService.CreateBlock(UserId, blockDTO);
-
-            //Что возвращать?
-            return Ok();
+            CreateBlockResponse createBlockResponse = mapper.Map<CreateBlockResponse>(newBlockDTO);
+           
+            return Ok(createBlockResponse);
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace WorkSpace.Controllers
             updateBlockDTO.Id = id;
             updateBlockDTO.UserId = UserId;
             UpdateBlockDTO updatetBlockDTO = await blockService.UpdateBlockById(updateBlockDTO);
-
-            return Ok();
+            UpdateBlockResponse updateBlockResponse = mapper.Map<UpdateBlockResponse>(updatetBlockDTO);
+            return Ok(updateBlockResponse);
         }
 
         /// <summary>
@@ -95,9 +95,9 @@ namespace WorkSpace.Controllers
             ChangeBlockTitleDTO changeBlockTitleDTO = mapper.Map<ChangeBlockTitleDTO>(changeBlockTitleRequest);
             changeBlockTitleDTO.Id = id;
             changeBlockTitleDTO.UserId = UserId;
-            _ = await blockService.ChangeBlockTitleById(changeBlockTitleDTO);
-
-            return Ok();
+            changeBlockTitleDTO = await blockService.ChangeBlockTitleById(changeBlockTitleDTO);
+            ChangeBlockTitleResponse changeBlockTitleResponse = mapper.Map<ChangeBlockTitleResponse>(changeBlockTitleDTO);
+            return Ok(changeBlockTitleResponse);
         }
 
         /// <summary>
@@ -109,9 +109,9 @@ namespace WorkSpace.Controllers
         public async Task<IActionResult> DuplicateBlock(int id)
         {
             BlockDuplicateDTO blockDuplicateDTO = await blockService.DuplicateBlock(UserId, id);
-
-            //Что возвращать ОК или Page? 
-            return Ok();
+            BlockDuplicateResponse blockDuplicateResponse = mapper.Map<BlockDuplicateResponse>(blockDuplicateDTO);
+             
+            return Ok(blockDuplicateResponse);
         }
 
     }
