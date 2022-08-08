@@ -12,6 +12,10 @@ namespace WorkSpace.Repositories.Interface
 
         public Task<Element> GetElementById(int elementId);
 
+        public Task<IEnumerable<Element>> ChangeElementPosition(int idElement, int newPosition);
+
+        public Task<List<Element>> GetElementByBlockId(int blockId);
+
         void Update(Element element);
 
         void Delete(Element element);

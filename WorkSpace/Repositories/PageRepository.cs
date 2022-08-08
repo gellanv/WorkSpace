@@ -50,7 +50,7 @@ namespace WorkSpace.Repositories
                                                                                Id = elem.Id,
                                                                                ContentHtml = elem.ContentHtml,
                                                                                Position = elem.Position
-                                                                           }),
+                                                                           }).OrderBy(x=>x.Position),
                                                 })
                                        })
 

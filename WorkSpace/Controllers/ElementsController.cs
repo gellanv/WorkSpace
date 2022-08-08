@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -97,15 +98,17 @@ namespace WorkSpace.Controllers
         }
 
         /// <summary>
-        /// Change position for element ЕЩЕ НЕ РЕАЛИЗОВАНО
+        /// Change position for element
         /// </summary>
         /// <response code="200">Success</response>
         // POST: api/elements/position     
-        [HttpPut]
+        [HttpPut("position")]
         public async Task<IActionResult> ChangePositionElement(int idElement, int newPosition)
-        {
-            
-            return Ok();
+        {            
+            IEnumerable<ElementDTO> elementDTOs = await elementService.ChangeElementPosition(idElement, newPosition);
+            IEnumerable<GetElementsResponse> changedPositionElementList = mapper.Map<IEnumerable<GetElementsResponse>>(elementDTOs);
+
+            return Ok(changedPositionElementList);
         }
     }
 }

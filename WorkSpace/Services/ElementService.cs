@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using WorkSpace.Behaviors.Interface;
 using WorkSpace.DTO;
@@ -57,6 +58,18 @@ namespace WorkSpace.Services
 
             unitOfWork.RepositoryElement.Delete(element);
             await unitOfWork.SaveAsync();
+        }
+
+        public async Task<IEnumerable<ElementDTO>> ChangeElementPosition(int idElement, int newPosition)
+        {
+            validation.CheckId(idElement);
+            validation.CheckId(newPosition);
+
+            IEnumerable<Element> elements = await unitOfWork.RepositoryElement.ChangeElementPosition(idElement, newPosition);
+            await unitOfWork.SaveAsync();
+            IEnumerable<ElementDTO> elementDTO = mapper.Map< IEnumerable<ElementDTO>>(elements);
+
+            return elementDTO;
         }
     }
 }
