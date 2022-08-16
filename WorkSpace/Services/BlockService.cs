@@ -23,6 +23,31 @@ namespace WorkSpace.Services
             this.mapper = _mapper;
             this.validation = _validation;
         }
+        public async Task<IEnumerable<GetBlockByIdDTO>> GetBlockById(int id, string UserId)
+        {
+            validation.CheckId(id);
+
+            Block block = await unitOfWork.RepositoryBlock.GetBlockById(id);
+            validation.CheckObjectForNull(block);
+
+            validation.CheckId(block.PageId);
+            Page page = await unitOfWork.RepositoryPage.GetPageById(block.PageId);
+            validation.CheckObjectForNull(page);
+
+            validation.CheckId(page.WorkSpaceId);
+            Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(page.WorkSpaceId);
+            validation.CheckObjectForNull(workSpace);
+            if (workSpace.UserId == UserId)
+            {
+                IEnumerable<GetBlockByIdDTO> getBlockByIdDTO = mapper.Map<IEnumerable<GetBlockByIdDTO>>(block.Elements);
+
+                return getBlockByIdDTO;
+            }
+            else
+            {
+                throw new Exception("No access");
+            }
+        }
         public async Task DeleteBlockById(string UserId, int blockId)
         {
             validation.CheckId(blockId);

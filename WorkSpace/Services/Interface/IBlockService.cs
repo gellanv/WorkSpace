@@ -16,6 +16,6 @@ namespace WorkSpace.Services.Interface
         Task<UpdateBlockDTO> UpdateBlockTitleById(UpdateBlockTitleDTO changeBlockTitleDTO);
         Task<BlockDuplicateDTO> DuplicateBlock(string UserId,int id);
         Task<UpdateBlockDTO> UpdateBlockStyleById(UpdateBlockStyleDTO updateBlockStyleDTO);
-
+        Task<IEnumerable<GetBlockByIdDTO>> GetBlockById(int id, string UserId);
     }
 }

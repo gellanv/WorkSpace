@@ -95,6 +95,9 @@ namespace WorkSpace.Mappings
             CreateMap<Element, UpdateBlockDTO.UpdateBlockElementDTO>().ReverseMap();
             CreateMap<DTO.BlockDTO, CreateBlockResponse>().ReverseMap();
 
+            CreateMap<Element, GetBlockByIdDTO>().ReverseMap();
+            CreateMap<GetBlockByIdResponse, GetBlockByIdDTO>().ReverseMap();
+
         }
     } 
 }

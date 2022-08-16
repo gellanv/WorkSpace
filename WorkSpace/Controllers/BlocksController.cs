@@ -83,7 +83,19 @@ namespace WorkSpace.Controllers
             UpdateBlockResponse updateBlockResponse = mapper.Map<UpdateBlockResponse>(updatetBlockDTO);
             return Ok(updateBlockResponse);
         }
+        /// <summary>
+        /// Get block by Id
+        /// </summary>
+        /// <response code="200">Success</response>       
+        // GET: api/block/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetBlockById(int id)
+        {
 
+            IEnumerable<GetBlockByIdDTO> getBlockByIdDTO = await blockService.GetBlockById(id,UserId);
+            IEnumerable<GetBlockByIdResponse> listBlockElementsResponse = mapper.Map<IEnumerable<GetBlockByIdResponse>>(getBlockByIdDTO);
+            return Ok(listBlockElementsResponse);
+        }
         /// <summary>
         /// change Block Title by id
         /// </summary>
