@@ -89,17 +89,31 @@ namespace WorkSpace.Controllers
         /// </summary>
         /// <response code="200">Success</response>       
         // PUT: api/changeBlockTitle/5
-        [HttpPut("changeBlockTitle/{id}")]
-        public async Task<ActionResult> ChangeBlockTitleById(int id, ChangeBlockTitleRequest changeBlockTitleRequest)
+        [HttpPut("updateBlockTitle/{id}")]
+        public async Task<ActionResult> UpdateBlockTitleById(int id, UpdateBlockTitleRequest changeBlockTitleRequest)
         {
-            ChangeBlockTitleDTO changeBlockTitleDTO = mapper.Map<ChangeBlockTitleDTO>(changeBlockTitleRequest);
+            UpdateBlockTitleDTO changeBlockTitleDTO = mapper.Map<UpdateBlockTitleDTO>(changeBlockTitleRequest);
             changeBlockTitleDTO.Id = id;
             changeBlockTitleDTO.UserId = UserId;
-            changeBlockTitleDTO = await blockService.ChangeBlockTitleById(changeBlockTitleDTO);
-            ChangeBlockTitleResponse changeBlockTitleResponse = mapper.Map<ChangeBlockTitleResponse>(changeBlockTitleDTO);
-            return Ok(changeBlockTitleResponse);
+            UpdateBlockDTO updatetBlockDTO = await blockService.UpdateBlockTitleById(changeBlockTitleDTO);
+            UpdateBlockResponse updateBlockResponse = mapper.Map<UpdateBlockResponse>(updatetBlockDTO);
+            return Ok(updateBlockResponse);
         }
-
+        /// <summary>
+        /// change Block Style by id
+        /// </summary>
+        /// <response code="200">Success</response>       
+        // PUT: api/changeBlockStyle/5
+        [HttpPut("updateBlockStyle/{id}")]
+        public async Task<ActionResult> UpdateBlockStyleById(int id, UpdateBlockStyleRequest updateBlockStyleRequest)
+        {
+            UpdateBlockStyleDTO updateBlockStyleDTO = mapper.Map<UpdateBlockStyleDTO>(updateBlockStyleRequest);
+            updateBlockStyleDTO.Id = id;
+            updateBlockStyleDTO.UserId = UserId;
+            UpdateBlockDTO updatetBlockDTO = await blockService.UpdateBlockStyleById(updateBlockStyleDTO);
+            UpdateBlockResponse updateBlockResponse = mapper.Map<UpdateBlockResponse>(updatetBlockDTO);
+            return Ok(updateBlockResponse);
+        }
         /// <summary>
         /// Make dublicate of block by Id 
         /// </summary>

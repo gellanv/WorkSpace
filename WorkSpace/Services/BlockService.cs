@@ -144,7 +144,7 @@ namespace WorkSpace.Services
             }
         }
 
-        public async Task<ChangeBlockTitleDTO> ChangeBlockTitleById(ChangeBlockTitleDTO changeBlockTitleDTO)
+        public async Task<UpdateBlockDTO> UpdateBlockTitleById(UpdateBlockTitleDTO changeBlockTitleDTO)
         {
             validation.CheckId(changeBlockTitleDTO.Id);
             validation.CheckObjectForValid(changeBlockTitleDTO);
@@ -165,7 +165,7 @@ namespace WorkSpace.Services
                 unitOfWork.RepositoryBlock.Update(block);
                 await unitOfWork.SaveAsync();
 
-                ChangeBlockTitleDTO changeBlockTitle = mapper.Map<ChangeBlockTitleDTO>(block);
+                UpdateBlockDTO changeBlockTitle = mapper.Map<UpdateBlockDTO>(block);
                 return changeBlockTitle;
             }
             else
@@ -173,7 +173,35 @@ namespace WorkSpace.Services
                 throw new Exception("No access");
             }
         }
+        public async Task<UpdateBlockDTO> UpdateBlockStyleById(UpdateBlockStyleDTO updateBlockStyleDTO)
+        {
+            validation.CheckId(updateBlockStyleDTO.Id);
+            validation.CheckObjectForValid(updateBlockStyleDTO);
 
+            Block block = await unitOfWork.RepositoryBlock.GetBlockById(updateBlockStyleDTO.Id);
+            validation.CheckObjectForNull(block);
+
+            validation.CheckId(block.PageId);
+            Page page = await unitOfWork.RepositoryPage.GetPageById(block.PageId);
+            validation.CheckObjectForNull(page);
+
+            validation.CheckId(page.WorkSpaceId);
+            Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(page.WorkSpaceId);
+            validation.CheckObjectForNull(workSpace);
+            if (workSpace.UserId == updateBlockStyleDTO.UserId)
+            {
+                block.Style = updateBlockStyleDTO.Style;
+                unitOfWork.RepositoryBlock.Update(block);
+                await unitOfWork.SaveAsync();
+
+                UpdateBlockDTO updateBlockTitle = mapper.Map<UpdateBlockDTO>(block);
+                return updateBlockTitle;
+            }
+            else
+            {
+                throw new Exception("No access");
+            }
+        }
         public async Task<BlockDuplicateDTO> DuplicateBlock(string UserId, int id)
         {
             validation.CheckId(id);
@@ -219,5 +247,7 @@ namespace WorkSpace.Services
                 throw new Exception("No access");
             }
         }
+
+       
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WorkSpace.ViewModels.Request
 {
-    public class ChangeBlockTitleRequest
+    public class UpdateBlockTitleRequest
     {
         public string Title { get; set; }
     }
