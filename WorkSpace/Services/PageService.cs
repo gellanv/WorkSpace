@@ -46,7 +46,7 @@ namespace WorkSpace.Services
                                                    Width = page.Blocks[i].Width,
                                                    Style = page.Blocks[i].Style, 
                                                    Title = page.Blocks[i].Title };
-                    //newBlock = unitOfWork.RepositorBlock.Create(newBlock).Result;
+                    newBlock = unitOfWork.RepositoryBlock.Create(newBlock).Result;
                     await unitOfWork.SaveAsync();
                     for (int j = 0; j < page.Blocks[i].Elements.Count; j++)
                     {

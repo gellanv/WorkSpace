@@ -98,6 +98,10 @@ namespace WorkSpace.Mappings
             CreateMap<Element, GetBlockByIdDTO>().ReverseMap();
             CreateMap<GetBlockByIdResponse, GetBlockByIdDTO>().ReverseMap();
 
+            CreateMap<User, AccountDTO>().ReverseMap();
+            CreateMap<AccountDTO, GetAccountResponse>().ReverseMap();
+            CreateMap<AccountDTO, ChangeAccountRequest>().ReverseMap();
+           
         }
     } 
 }

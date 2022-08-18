@@ -107,7 +107,7 @@ namespace WorkSpace.Controllers
         }
 
         /// <summary>
-        /// Make dublicate of page by Id (ПОКА НЕ РАБОТАЕТ, ИСПОЛЬЗУЕТ КОНТРОЛЛЕРЫ, КОТОРЫЕ ЕЩЕ НЕ РЕАЛИЗОВАНЫ)
+        /// Make dublicate of page by Id
         /// </summary>
         /// <response code="200">Success</response>
         // POST: api/page/duplicate/5
