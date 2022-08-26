@@ -15,6 +15,7 @@ namespace WorkSpace.Repositories
         public Task<Page> Create(Page page); // создание объекта
         public void Update(Page page); // обновление объекта
         public void Delete(Page page); // удаление объекта по id
+        public void DeleteRange(IEnumerable<Page> pages);
         public Task<IEnumerable<Page>> GetListPagesNotDeleted(int workSpaceId);
         public Task<IEnumerable<Page>> GetListPagesDeleted(string userId);
         public Task<IEnumerable<Page>> GetListFavoritePages(string userId);

@@ -109,5 +109,9 @@ namespace WorkSpace.Repositories
             return await context.Pages.Where(x => x.WorkSpaceId == workSpaceId && x.Deleted == false).ToListAsync();
 
         }
+        public void DeleteRange(IEnumerable<Page> pages)
+        {
+            context.Pages.RemoveRange(pages);
+        }
     }
 }

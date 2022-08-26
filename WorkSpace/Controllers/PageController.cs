@@ -81,6 +81,19 @@ namespace WorkSpace.Controllers
         }
 
         /// <summary>
+        /// Delete all pages from trash
+        /// </summary>
+        /// <response code="200">Success</response>       
+        // DELETE: api/page/5
+        [HttpDelete("cleartrash")]
+        public async Task<ActionResult> ClearTrash()
+        {
+            await pageService.ClearTrash(UserId);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Add or Remove page from list Favourites by Id
         /// </summary>
         /// <response code="200">Success</response>       

@@ -83,6 +83,13 @@ namespace WorkSpace.Services
                 throw new Exception("No access");
             }
         }
+        public async Task ClearTrash(string UserId)
+        {
+            IEnumerable<Page> pages = await unitOfWork.RepositoryPage.GetListPagesDeleted(UserId);
+
+            unitOfWork.RepositoryPage.DeleteRange(pages);
+            await unitOfWork.SaveAsync();
+        }
 
         public async Task<PageDTO> GetPageById(string UserId, int pageId)
         {
@@ -199,6 +206,5 @@ namespace WorkSpace.Services
             IEnumerable<PageDTO> pageDtos = mapper.Map<IEnumerable<PageDTO>>(pages);
             return pageDtos;
         }
-
     }
 }
