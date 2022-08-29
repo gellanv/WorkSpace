@@ -1,9 +1,4 @@
-﻿using System.IO;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.IO;
 using WorkSpace.Behaviors;
 using WorkSpace.Behaviors.Interface;
 using WorkSpace.Helpers;
@@ -65,15 +61,7 @@ namespace WorkSpace
                             ValidAudience = AuthOptions.AUDIENCE,
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey()
                         };
-                    })
-                    //.AddGoogle(options =>
-                    //{
-                    //    options.ClientId = Configuration["Google:ClientId"];
-                    //    options.ClientSecret = Configuration["Google:ClientSecret"];
-                    //})
-                    ;
-            
-            
+                    });
 
             services.AddSwaggerGen(c =>
             {
@@ -105,7 +93,7 @@ namespace WorkSpace
             });
 
 
-            services.AddSingleton<IValidation,Validation>();
+            services.AddSingleton<IValidation, Validation>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
 

@@ -44,14 +44,18 @@ namespace WorkSpace.Controllers
             return Ok(authResponse);
         }
 
-        //// POST: api/logout
-        //[HttpPost("logout")]
-        //public async Task<IActionResult> LogOut(Object userLogOut)
-        //{
-        //    //receive Object <UserLogOut>
-        //    //Destroid JWT token
-        //    //response ActionResult OK 200
-        //    return null;
-        //}
+        // POST: api/login
+        [HttpPost("logingoogle")]
+        public async Task<IActionResult> LogInGoogle([FromBody] ExternalAuthDto externalAuthDto)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.Values.Select(x => x.Errors.Select(e => e.ErrorMessage)));
+            }
+            var authResponse = await _identityService.LoginGoogleAsync(externalAuthDto);
+
+            return Ok(authResponse);
+        }
     }
 }

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using WorkSpace.Helpers;
 using WorkSpace.Models;
 using WorkSpace.Services.Interface;
@@ -69,6 +71,54 @@ namespace WorkSpace.Services
 
             return CreateToken(_user.Id, _user.Email, _user.UserName);
         }
+
+        public async Task<AuthenticationResponse> LoginGoogleAsync(ExternalAuthDto externalAuthDto)
+        {
+            var payload = await VerifyGoogleToken(externalAuthDto);
+
+            if (payload == null)
+                throw new Exception("Invalid External Authentication.");
+
+            var info = new UserLoginInfo("GOOGLE", payload.Subject, "GOOGLE");
+            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(payload.Email);
+                if (user == null)
+                {
+                    user = new User { Email = payload.Email, UserName = payload.Email };
+                    await _userManager.CreateAsync(user);
+                    await _userManager.AddLoginAsync(user, info);
+                }
+                else
+                {
+                    await _userManager.AddLoginAsync(user, info);
+                }
+            }
+            if (user == null)
+                throw new Exception("Invalid External Authentication.");
+
+            AuthenticationResponse authenticationResponse = CreateToken(user.Id, user.Email, user.UserName);
+            return authenticationResponse;
+        }
+
+        public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalAuthDto externalAuth)
+        {
+            try
+            {
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string>() { AuthOptions.ClientID }
+                };
+                var payload = await GoogleJsonWebSignature.ValidateAsync(externalAuth.TokenID, settings);
+                return payload;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid External Authentication.");
+            }
+        }
+
 
         private AuthenticationResponse CreateToken(string id, string email, string userName)
         {

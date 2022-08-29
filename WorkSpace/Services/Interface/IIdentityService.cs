@@ -8,5 +8,6 @@ namespace WorkSpace.Services.Interface
     {
         Task<AuthenticationResponse> RegistrationAsync(UserRegistrationRequest user);
         Task<AuthenticationResponse> LoginAsync(UserLogInRequest user);
+        Task<AuthenticationResponse> LoginGoogleAsync(ExternalAuthDto externalAuthDto);
     }
 }
