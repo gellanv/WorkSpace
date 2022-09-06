@@ -10,6 +10,7 @@ namespace WorkSpace.ViewModels.Response
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Favourite { get; set; }
         public IEnumerable<BlockDTO> ListBlocks { get; set; }
         //public class BlockDTO
         //{
