@@ -34,6 +34,7 @@ namespace WorkSpace.Repositories
                                            Id = id,
                                            Name = page.Name,
                                            WorkSpaceId = page.WorkSpaceId,
+                                           Favourite = page.Favourite,
                                            ListBlocks = page.Blocks
                                                 .Select(block => new PageDTO.BlockDTO
                                                 {
