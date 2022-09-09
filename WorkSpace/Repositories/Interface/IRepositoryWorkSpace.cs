@@ -9,6 +9,7 @@ namespace WorkSpace.Repositories.Interface
     public interface IRepositoryWorkSpace
     {
         public Task<IEnumerable<WorkSpace.Models.WorkSpace>> GetWorkSpaces(string userId);
+        public Task<Models.WorkSpace> GetPersonalWorkSpace(string userId);
         public IEnumerable<WorkSpace.Models.WorkSpace> GetList();
         public Task<IEnumerable<Page>> GetListPages(int workSpaceId);        
         public Task<Models.WorkSpace> GetWorkSpaceById(int workSpaceId);

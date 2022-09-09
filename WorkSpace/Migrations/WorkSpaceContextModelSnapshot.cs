@@ -264,9 +264,6 @@ namespace WorkSpace.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PersonalPage")
-                        .HasColumnType("bit");
-
                     b.Property<int>("WorkSpaceId")
                         .HasColumnType("int");
 
@@ -375,6 +372,9 @@ namespace WorkSpace.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Personal")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

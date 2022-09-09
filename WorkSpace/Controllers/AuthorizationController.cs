@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using WorkSpace.DTO;
 using WorkSpace.Services.Interface;
 using WorkSpace.ViewModels.Request;
 
@@ -11,7 +13,6 @@ namespace WorkSpace.Controllers
     public class AuthorizationController : ControllerBase
     {
         private readonly IIdentityService _identityService;
-
         public AuthorizationController(IIdentityService identityService)
         {
             _identityService = identityService;
@@ -48,7 +49,6 @@ namespace WorkSpace.Controllers
         [HttpPost("logingoogle")]
         public async Task<IActionResult> LogInGoogle([FromBody] ExternalAuthDto externalAuthDto)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.Values.Select(x => x.Errors.Select(e => e.ErrorMessage)));

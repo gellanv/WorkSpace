@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WorkSpace.Migrations
 {
     [DbContext(typeof(WorkSpaceContext))]
-    [Migration("20220818111821_init")]
-    partial class init
+    [Migration("20220909120417_personalWorkSpace")]
+    partial class personalWorkSpace
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -266,9 +266,6 @@ namespace WorkSpace.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PersonalPage")
-                        .HasColumnType("bit");
-
                     b.Property<int>("WorkSpaceId")
                         .HasColumnType("int");
 
@@ -377,6 +374,9 @@ namespace WorkSpace.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Personal")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

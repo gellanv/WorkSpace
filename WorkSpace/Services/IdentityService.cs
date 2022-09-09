@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WorkSpace.Helpers;
 using WorkSpace.Models;
+using WorkSpace.Repositories.Interface;
 using WorkSpace.Services.Interface;
 using WorkSpace.ViewModels.Request;
 using WorkSpace.ViewModels.Response;
@@ -17,10 +18,11 @@ namespace WorkSpace.Services
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<User> _userManager;
-
-        public IdentityService(UserManager<User> userManager)
+        private readonly IUnitOfWork unitOfWork;
+        public IdentityService(UserManager<User> userManager, IUnitOfWork _unitOfWork)
         {
             _userManager = userManager;
+            unitOfWork = _unitOfWork;
         }
 
         public async Task<AuthenticationResponse> RegistrationAsync(UserRegistrationRequest user)
@@ -46,6 +48,15 @@ namespace WorkSpace.Services
                     Error = createUser.Errors.ToString()
                 };
             }
+
+            Models.WorkSpace personalWorkSpaceModel = new Models.WorkSpace();
+            personalWorkSpaceModel.DateCreate = DateTime.Now;
+            personalWorkSpaceModel.Name = "Personal";
+            personalWorkSpaceModel.UserId = newUser.Id;
+            Models.WorkSpace addPersonalWorkSpace = await unitOfWork.RepositoryWorkSpace.Create(personalWorkSpaceModel);
+            addPersonalWorkSpace.Personal = true;
+            await unitOfWork.SaveAsync();
+
             return CreateToken(newUser.Id, newUser.Email, newUser.UserName);
         }
 
@@ -89,6 +100,13 @@ namespace WorkSpace.Services
                     user = new User { Email = payload.Email, UserName = payload.Email };
                     await _userManager.CreateAsync(user);
                     await _userManager.AddLoginAsync(user, info);
+                    Models.WorkSpace personalWorkSpaceModel = new Models.WorkSpace();
+                    personalWorkSpaceModel.DateCreate = DateTime.Now;
+                    personalWorkSpaceModel.Name = "Personal";
+                    personalWorkSpaceModel.UserId = user.Id;
+                    Models.WorkSpace addPersonalWorkSpace = await unitOfWork.RepositoryWorkSpace.Create(personalWorkSpaceModel);
+                    addPersonalWorkSpace.Personal = true;
+                    await unitOfWork.SaveAsync();
                 }
                 else
                 {
@@ -99,6 +117,8 @@ namespace WorkSpace.Services
                 throw new Exception("Invalid External Authentication.");
 
             AuthenticationResponse authenticationResponse = CreateToken(user.Id, user.Email, user.UserName);
+
+            
             return authenticationResponse;
         }
 

@@ -59,6 +59,20 @@ namespace WorkSpace.Controllers
             return Ok(getAllWorkSpaceResponses);
         }
 
+        /// <summary>
+        /// Get Personal WorkSpace
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="500">Id isn't valid / The object wasn't found</response>
+        // GET: api/workspaces/personal
+        [HttpGet("personal")]
+        public async Task<IActionResult> GetPersonalWorkSpace()
+        {
+            WorkSpaceWithListPagesDTO personalWorkSpaceWithListPagesDTO = await workSpaceService.GetPersonalWorkSpace(UserId);
+            GetWorkSpaceByIdResponse personalWorkSpaceListPagesResponse = mapper.Map<GetWorkSpaceByIdResponse>(personalWorkSpaceWithListPagesDTO);
+
+            return Ok(personalWorkSpaceListPagesResponse);
+        }
 
         /// <summary>
         /// Get WorkSpace by id

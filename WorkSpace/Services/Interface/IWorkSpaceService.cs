@@ -10,6 +10,7 @@ namespace WorkSpace.Services.Interface
         Task<WorkSpaceDTO> CreateWorkSpace(WorkSpaceDTO createWorkSpaceDTO);
         Task<WorkSpaceDTO> ChangeNameWorkSpace(WorkSpaceDTO changeNameWorkSpaceDTO);
         Task<WorkSpaceWithListPagesDTO> GetWorkSpaceByID(int workSpaceId, string userID);
+        Task<WorkSpaceWithListPagesDTO> GetPersonalWorkSpace(string userID);
         Task DeleteWorkSpace(int workSpaceId, string userId);
     }
 }

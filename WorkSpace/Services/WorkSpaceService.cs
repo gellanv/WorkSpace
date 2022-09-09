@@ -32,7 +32,25 @@ namespace WorkSpace.Services
 
             return workSpacesDTO;
         }
+        public async Task<WorkSpaceWithListPagesDTO> GetPersonalWorkSpace(string userID)
+        {
+            Models.WorkSpace personalWorkSpace = await unitOfWork.RepositoryWorkSpace.GetPersonalWorkSpace(userID);
+            validation.CheckObjectForNull(personalWorkSpace);
+            if (personalWorkSpace.UserId == userID)
+            {
+                IEnumerable<Page> listPages = await unitOfWork.RepositoryPage.GetListPagesNotDeleted(personalWorkSpace.Id);
 
+                WorkSpaceWithListPagesDTO personalWorkSpaceWithListPagesDTO = new()
+                {
+                    Id = personalWorkSpace.Id,
+                    Name = personalWorkSpace.Name,
+                    Pages = mapper.Map<IEnumerable<WorkSpaceWithListPagesDTO.PagesDTO>>(listPages)
+                };
+
+                return personalWorkSpaceWithListPagesDTO;
+            }
+            else throw new Exception("No access");
+        }
         public async Task<WorkSpaceWithListPagesDTO> GetWorkSpaceByID(int workSpaceId, string userID)
         {
             validation.CheckId(workSpaceId);
@@ -55,7 +73,7 @@ namespace WorkSpace.Services
             }
             else throw new Exception("No access");
         }
-
+       
         public async Task<WorkSpaceDTO> CreateWorkSpace(WorkSpaceDTO createWorkSpaceDTO)
         {
             validation.CheckObjectForValid(createWorkSpaceDTO);
@@ -77,7 +95,7 @@ namespace WorkSpace.Services
             Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(changeNameWorkSpaceDTO.Id);
             validation.CheckObjectForNull(workSpace);
 
-            if (workSpace.UserId == changeNameWorkSpaceDTO.UserId)
+            if (workSpace.UserId == changeNameWorkSpaceDTO.UserId && workSpace.Personal!=true)
             {
                 workSpace.Name = changeNameWorkSpaceDTO.Name;
                 unitOfWork.RepositoryWorkSpace.Update(workSpace);
@@ -96,7 +114,7 @@ namespace WorkSpace.Services
             Models.WorkSpace workSpace = await unitOfWork.RepositoryWorkSpace.GetWorkSpaceById(workSpaceId);
             validation.CheckObjectForNull(workSpace);
 
-            if (workSpace.UserId == userId)
+            if (workSpace.UserId == userId && workSpace.Personal != true)
             {
                 unitOfWork.RepositoryWorkSpace.Delete(workSpace);
                 await unitOfWork.SaveAsync();

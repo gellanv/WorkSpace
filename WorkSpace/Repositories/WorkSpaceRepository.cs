@@ -19,11 +19,15 @@ namespace WorkSpace.Repositories
 
         public async Task<IEnumerable<Models.WorkSpace>> GetWorkSpaces(string userId)
         {
-            return await context.WorkSpaces.Where(x => x.UserId == userId).ToListAsync();
+            return await context.WorkSpaces.Where(x => x.UserId == userId && x.Personal == false).ToListAsync();
         }
         public async Task<Models.WorkSpace> GetWorkSpaceById(int workSpaceId)
         {
             return await context.WorkSpaces.Where(x => x.Id == workSpaceId).FirstOrDefaultAsync();
+        }
+        public async Task<Models.WorkSpace> GetPersonalWorkSpace(string userId)
+        {
+            return await context.WorkSpaces.Where(x => x.UserId == userId && x.Personal==true).FirstOrDefaultAsync();
         }
         public IEnumerable<Models.WorkSpace> GetList()
         {

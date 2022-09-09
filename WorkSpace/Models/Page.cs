@@ -14,8 +14,6 @@ namespace WorkSpace.Models
         public DateTime DateCreate { get; set; }
         public string Description { get; set; }
         [DefaultValue("false")]
-        public bool PersonalPage { get; set; }
-        [DefaultValue("false")]
         public bool Favourite { get; set; }
         [DefaultValue("false")]
         public bool Deleted  { get; set; }
