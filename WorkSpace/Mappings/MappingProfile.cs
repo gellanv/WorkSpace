@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,6 @@ namespace WorkSpace.Mappings
 {
     public class MappingProfile : Profile
     {
-        //Изменения для записи
         public MappingProfile()
         {
             CreateMap<User,UserDTO>().ReverseMap();
@@ -82,8 +81,8 @@ namespace WorkSpace.Mappings
             CreateMap<UpdateBlockResponse.UpdateBlockElementResponse, UpdateBlockDTO.UpdateBlockElementDTO>().ReverseMap();
 
             CreateMap<UpdateBlockTitleRequest, UpdateBlockTitleDTO>().ReverseMap();
-            
-            
+            CreateMap<UpdateBlockStyleRequest, UpdateBlockStyleDTO>().ReverseMap();
+
 
             CreateMap<Block, BlockDuplicateDTO>().ReverseMap();
             CreateMap<Element, BlockDuplicateDTO.ElementDuplicateDTO>().ReverseMap();
